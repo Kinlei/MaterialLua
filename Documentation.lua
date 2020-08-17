@@ -48,13 +48,11 @@ local NewDropdown = NewPage.Dropdown({
 })
 
 local NewChipSet = NewPage.ChipSet({
-  -> Text <string[any]>
   -> Callback <function(chipset)>
   -> Options <table>
 })
 
 local NewDataTable = NewPage.DataTable({
-  -> Text = <string[any]>
   -> Callback <function(datatable)>
   -> Options <table>
 })
