@@ -175,7 +175,7 @@ local Properties = {
 	},
 	NavBar = {
 		Name = "SheetToggle",
-		Image = "http://www.roblox.com/asset/?id=5572338973",
+		Image = "http://www.roblox.com/asset/?id=5576439039",
 		BackgroundTransparency = 1,
 		Size = UDim2.fromOffset(20,20),
 		Position = UDim2.fromOffset(5,5),
