@@ -1415,9 +1415,11 @@ function Material.Load(Config)
 			
 			HueTracker.MouseButton1Down:Connect(function()
 				H.Value = 1 - GetXY(HueTracker)
+                ColorPickerCallback(Color3.fromHSV(H,S,V))
 				local MouseMove, MouseKill
 				MouseMove = Mouse.Move:Connect(function()
 					H.Value = 1 - GetXY(HueTracker)
+                    ColorPickerCallback(Color3.fromHSV(H,S,V))
 				end)
 				MouseKill = InputService.InputEnded:Connect(function(UserInput)
 					if UserInput.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -1429,9 +1431,11 @@ function Material.Load(Config)
 			
 			ValueTracker.MouseButton1Down:Connect(function()
 				V.Value = 1 - GetXY(HueTracker)
+                ColorPickerCallback(Color3.fromHSV(H,S,V))
 				local MouseMove, MouseKill
 				MouseMove = Mouse.Move:Connect(function()
 					V.Value = 1 - GetXY(HueTracker)
+                    ColorPickerCallback(Color3.fromHSV(H,S,V))
 				end)
 				MouseKill = InputService.InputEnded:Connect(function(UserInput)
 					if UserInput.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -1443,9 +1447,11 @@ function Material.Load(Config)
 			
 			SaturationTracker.MouseButton1Down:Connect(function()
 				S.Value = 1 - GetXY(HueTracker)
+                ColorPickerCallback(Color3.fromHSV(H,S,V))
 				local MouseMove, MouseKill
 				MouseMove = Mouse.Move:Connect(function()
 					S.Value = 1 - GetXY(HueTracker)
+                    ColorPickerCallback(Color3.fromHSV(H,S,V))
 				end)
 				MouseKill = InputService.InputEnded:Connect(function(UserInput)
 					if UserInput.UserInputType == Enum.UserInputType.MouseButton1 then
