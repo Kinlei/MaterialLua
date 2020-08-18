@@ -1600,7 +1600,7 @@ function Material.Load(Config)
 			
 			local SliderDot = Objects.new("CircleButton")
 			SliderDot.Size = UDim2.fromOffset(10,10)
-			SliderDot.Position = UDim2.fromScale(0.5,0.5) - UDim2.fromOffset(5,5)
+			SliderDot.Position = UDim2.fromScale(DefaultScale,0.5) - UDim2.fromOffset(5,5)
 			SliderDot.ImageColor3 = Theme.SliderAccent
 			SliderDot.ImageTransparency = 0
 			SliderDot.ZIndex = 50
@@ -1608,7 +1608,7 @@ function Material.Load(Config)
 			
 			local SliderFadedDot = Objects.new("Circle")
 			SliderFadedDot.Size = UDim2.fromOffset(SizeFromScale,SizeFromScale)
-			SliderFadedDot.Position = UDim2.fromScale(DefaultScale,0.5) - UDim2.fromOffset(SizeFromScale/2,SizeFromScale/2)
+			SliderFadedDot.Position = UDim2.fromScale(0.5,0.5) - UDim2.fromOffset(SizeFromScale/2,SizeFromScale/2)
 			SliderFadedDot.ImageColor3 = Theme.SliderAccent
 			SliderFadedDot.ImageTransparency = 1
 			SliderFadedDot.ZIndex = 50
