@@ -44,7 +44,7 @@ local NewDropdown = NewPage.Dropdown({
   -> Text <string[any]>
   -> Callback <function(value)>
   -> Options <table>
-  -> Menu
+  -> Menu <table>
 })
 
 local NewChipSet = NewPage.ChipSet({
