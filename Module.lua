@@ -601,11 +601,16 @@ function Material.Load(Config)
 	local SizeX = Config.SizeX or 300
 	local SizeY = Config.SizeY or 500
 	local Theme = Config.Theme or "Light"
+	local Overrides = Config.ColorOverrides or {}
 	local Open = true
 	
 	Theme = Themes[Theme]
 	
 	ThisTheme = Theme
+	
+	for KeyOverride, ValueOverride in next, Overrides do
+		ThisTheme[KeyOverride] = ValueOverride
+	end
 	
 	local OldInstance = TargetParent:FindFirstChild(Title)
 	
