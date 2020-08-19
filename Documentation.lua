@@ -6,6 +6,7 @@ local NewUI = Material.Load({
   -> SizeX <number[inf]>
   -> SizeY <number[inf]>
   -> Theme <string["Light","Dark"]>
+  -> ColorOverrides <table>
 })
 
 local NewPage = NewUI.New({
