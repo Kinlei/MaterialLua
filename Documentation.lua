@@ -63,3 +63,9 @@ local NewColorPicker = NewPage.ColorPicker({
   -> Callback <function(value)>
   -> Menu <table>
 })
+
+local NewTextField = NewPage.TextField({
+  -> Text <string[any]>
+  -> Callback <function(value)>
+  -> Menu <table>
+})
