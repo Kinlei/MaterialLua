@@ -454,6 +454,8 @@ local NavBar = {
 	end
 }
 
+local MainGUI
+
 function TryAddMenu(Object, Menu, ReturnTable)
 	local Menu = Menu
 	local ReturnTable = ReturnTable
@@ -479,10 +481,14 @@ function TryAddMenu(Object, Menu, ReturnTable)
 		MenuBuild.Name = "Menu"
 		MenuBuild.ImageColor3 = ThisTheme.ButtonAccent
 		MenuBuild.Size = UDim2.fromOffset(120,0)
-		MenuBuild.Position = UDim2.fromScale(1,0.5) - UDim2.fromOffset(145,10)
+		MenuBuild.Position = UDim2.fromOffset(MenuButton.AbsolutePosition.X,MenuButton.AbsolutePosition.Y) - UDim2.fromOffset(125,5)
 		MenuBuild.ZIndex = 100
 		MenuBuild.ClipsDescendants = true
-		MenuBuild.Parent = Object
+		MenuBuild.Parent = MainGUI
+		
+		MenuButton:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
+			MenuBuild.Position = UDim2.fromOffset(MenuButton.AbsolutePosition.X,MenuButton.AbsolutePosition.Y) - UDim2.fromOffset(125,5)
+		end)
 		
 		local MenuContent = Objects.new("Frame")
 		MenuContent.Name = "Content"
@@ -621,6 +627,8 @@ function Material.Load(Config)
 	local NewInstance = Objects.new("ScreenGui")
 	NewInstance.Name = Title
 	NewInstance.Parent = TargetParent
+	
+	MainGUI = NewInstance
 	
 	local MainFrame = Objects.new("Round")
 	MainFrame.Name = "MainFrame"
