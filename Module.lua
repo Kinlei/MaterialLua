@@ -37,7 +37,9 @@ local Themes = {
 		Dropdown = Color3.fromRGB(255,255,255),
 		DropdownAccent = Color3.fromRGB(124,37,255),
 		ColorPicker = Color3.fromRGB(255,255,255),
-		ColorPickerAccent = Color3.fromRGB(124,37,255)
+		ColorPickerAccent = Color3.fromRGB(124,37,255),
+		TextField = Color3.fromRGB(124,37,255),
+		TextFieldAccent = Color3.fromRGB(124,37,255)
 	},
 	Dark = {
 		MainFrame = Color3.fromRGB(30,30,30),
@@ -67,7 +69,9 @@ local Themes = {
 		Dropdown = Color3.fromRGB(85,85,85),
 		DropdownAccent = Color3.fromRGB(235,235,235),
 		ColorPicker = Color3.fromRGB(85,85,85),
-		ColorPickerAccent = Color3.fromRGB(235,235,235)
+		ColorPickerAccent = Color3.fromRGB(235,235,235),
+		TextField = Color3.fromRGB(175,175,175),
+		TextFieldAccent = Color3.fromRGB(255,255,255)
 	}
 }
 
@@ -1669,6 +1673,57 @@ function Material.Load(Config)
 			if MenuAdded then
 				ToggleTracker.Position -= UDim2.fromOffset(15,0)
 				MenuButton.ImageColor3 = Theme.Toggle
+			end
+		end
+		
+		function OptionLibrary.TextField(TextFieldConfig)
+			local TextFieldText = TextFieldConfig.Text or "nil text field"
+			local TextFieldCallback = TextFieldConfig.Callback or function() print("nil text field") end
+			local Menu = TextFieldConfig.Menu or {}
+			
+			local TextField = Objects.new("Round")
+			TextField.Name = "TextField"
+			TextField.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,30)
+			TextField.ImageColor3 = Theme.TextField
+			TextField.ImageTransparency = 0.8
+			TextField.Parent = PageContentFrame
+			
+			local TextEffect = Objects.new("Frame")
+			TextEffect.Name = "Effect"
+			TextEffect.BackgroundTransparency = 0.2
+			TextEffect.BackgroundColor3 = Theme.TextField
+			TextEffect.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,2)
+			TextEffect.Position = UDim2.fromScale(0,1) - UDim2.fromOffset(0,2)
+			TextEffect.Parent = TextField
+			
+			local TextShadow = Objects.new("Shadow")
+			TextShadow.ImageColor3 = Theme.TextField
+			TextShadow.ImageTransparency = 0.7
+			TextShadow.Parent = TextField
+			
+			local TextInput = Objects.new("Box")
+			TextInput.Name = "Value"
+			TextInput.PlaceholderText = TextFieldText
+			TextInput.PlaceholderColor3 = Theme.TextFieldAccent
+			TextInput.TextColor3 = Theme.TextFieldAccent
+			TextInput.Text = ""
+			TextInput.Font = Enum.Font.GothamSemibold
+			TextInput.TextSize = 14
+			TextInput.Parent = TextField
+			
+			TextInput.FocusLost:Connect(function()
+				TextFieldCallback(TextInput.Text)
+			end)
+			
+			local MenuAdded, MenuBar = TryAddMenu(TextField, Menu, {
+				SetText = function(Value)
+					TextInput.Text = Value
+					TextFieldCallback(TextInput.Text)
+				end
+			})
+			
+			if MenuAdded then
+				MenuBar.ImageColor3 = Theme.TextFieldAccent
 			end
 		end
 		
