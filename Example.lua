@@ -5,7 +5,10 @@ local X = Material.Load({
 	Style = 3,
 	SizeX = 500,
 	SizeY = 350,
-	Theme = "Dark"
+	Theme = "Light",
+	ColorOverrides = {
+		MainFrame = Color3.fromRGB(235,235,235)
+	}
 })
 
 local Y = X.New({
