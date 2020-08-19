@@ -1091,6 +1091,7 @@ function Material.Load(Config)
 			
 			if MenuAdded then
 				DropdownToggle.Position -= UDim2.fromOffset(25,0)
+				MenuButton.ImageColor3 = Theme.DropdownAccent
 			end
 		end
 		
@@ -1685,12 +1686,12 @@ function Material.Load(Config)
 			TextField.Name = "TextField"
 			TextField.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,30)
 			TextField.ImageColor3 = Theme.TextField
-			TextField.ImageTransparency = 0.8
+			TextField.ImageTransparency = 1
 			TextField.Parent = PageContentFrame
 			
 			local TextEffect = Objects.new("Frame")
 			TextEffect.Name = "Effect"
-			TextEffect.BackgroundTransparency = 0.2
+			TextEffect.BackgroundTransparency = 1
 			TextEffect.BackgroundColor3 = Theme.TextField
 			TextEffect.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,2)
 			TextEffect.Position = UDim2.fromScale(0,1) - UDim2.fromOffset(0,2)
@@ -1698,7 +1699,7 @@ function Material.Load(Config)
 			
 			local TextShadow = Objects.new("Shadow")
 			TextShadow.ImageColor3 = Theme.TextField
-			TextShadow.ImageTransparency = 0.7
+			TextShadow.ImageTransparency = 1
 			TextShadow.Parent = TextField
 			
 			local TextInput = Objects.new("Box")
@@ -1709,9 +1710,22 @@ function Material.Load(Config)
 			TextInput.Text = ""
 			TextInput.Font = Enum.Font.GothamSemibold
 			TextInput.TextSize = 14
+			TextInput.TextTransparency = 1
 			TextInput.Parent = TextField
 			
+			TweenService:Create(TextField, TweenInfo.new(0.5), {ImageTransparency = 0.8}):Play()
+			TweenService:Create(TextEffect, TweenInfo.new(0.5), {BackgroundTransparency = 0.2}):Play()
+			TweenService:Create(TextShadow, TweenInfo.new(0.5), {ImageTransparency = 0.7}):Play()
+			TweenService:Create(TextInput, TweenInfo.new(0.5), {TextTransparency = 0.5}):Play()
+			
+			TextInput.Focused:Connect(function()
+				TweenService:Create(TextField, TweenInfo.new(0.5), {ImageTransparency = 0.7}):Play()
+				TweenService:Create(TextInput, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+			end)
+			
 			TextInput.FocusLost:Connect(function()
+				TweenService:Create(TextField, TweenInfo.new(0.5), {ImageTransparency = 0.8}):Play()
+				TweenService:Create(TextInput, TweenInfo.new(0.5), {TextTransparency = 0.5}):Play()
 				TextFieldCallback(TextInput.Text)
 			end)
 			
