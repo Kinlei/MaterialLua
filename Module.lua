@@ -216,14 +216,15 @@ local function GetXY(GuiObject)
 end
 
 local function CircleAnim(GuiObject, EndColour, StartColour)
+	local PX, PY = GetXY(GuiObject)
 	local Circle = Objects.new("Circle")
 	Circle.Size = UDim2.fromScale(0,0)
-	Circle.Position = UDim2.fromScale(0.5,0.5)
+	Circle.Position = UDim2.fromScale(PX,PY)
 	Circle.ImageColor3 = StartColour or GuiObject.ImageColor3
 	Circle.ZIndex = 200
 	Circle.Parent = GuiObject
 	local Size = GuiObject.AbsoluteSize.X
-	TweenService:Create(Circle, TweenInfo.new(2), {Position = UDim2.fromScale(0.5,0.5) - UDim2.fromOffset(Size/2,Size/2), ImageTransparency = 1, ImageColor3 = EndColour, Size = UDim2.fromOffset(Size,Size)}):Play()
+	TweenService:Create(Circle, TweenInfo.new(1), {Position = UDim2.fromScale(PX,PY) - UDim2.fromOffset(Size/2,Size/2), ImageTransparency = 1, ImageColor3 = EndColour, Size = UDim2.fromOffset(Size,Size)}):Play()
 	wait(2)
 	Circle:Destroy()
 end
@@ -258,6 +259,18 @@ local NavBar = {
 		
 		NavBarContent.ChildAdded:Connect(function(Child)
 			pcall(function()
+				local Children = #NavBarContent:GetChildren() - 2
+				TweenService:Create(Child, TweenInfo.new(1), {TextTransparency = (Children > 1) and 0.5 or 0}):Play()
+			end)
+			pcall(function()
+				local Children = #NavBarContent:GetChildren() - 2
+				TweenService:Create(Child, TweenInfo.new(1), {ImageTransparency = (Children > 1) and 0.5 or 0}):Play()
+			end)
+			pcall(function()
+				local Children = #NavBarContent:GetChildren() - 2
+				TweenService:Create(Child:FindFirstChildWhichIsA("ImageLabel"), TweenInfo.new(1), {ImageTransparency = (Children > 1) and 0.5 or 0}):Play()
+			end)
+			pcall(function()
 				Child.TextColor3 = ThisTheme.NavBarAccent
 			end)
 			pcall(function()
@@ -286,18 +299,35 @@ local NavBar = {
 		NewNavBar.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(-10,30)
 		NewNavBar.Position = UDim2.fromOffset(5,35)
 		NewNavBar.ImageColor3 = ThisTheme.NavBarAccent
+		NewNavBar.ImageTransparency = 1
 		NewNavBar.ZIndex = 100
 		
 		local NavBarShadow = Objects.new("Shadow")
 		NavBarShadow.ImageColor3 = ThisTheme.NavBarInvert
+		NavBarShadow.ImageTransparency = 1
 		NavBarShadow.Parent = NewNavBar
 		NavBarShadow.ZIndex = 100
+		
+		TweenService:Create(NewNavBar, TweenInfo.new(1), {ImageTransparency = 0}):Play()
+		TweenService:Create(NavBarShadow, TweenInfo.new(1), {ImageTransparency = 0}):Play()
 		
 		local NavBarContent = Objects.new("Frame")
 		NavBarContent.Name = "Content"
 		NavBarContent.Parent = NewNavBar
 		
 		NavBarContent.ChildAdded:Connect(function(Child)
+			pcall(function()
+				local Children = #NavBarContent:GetChildren() - 2
+				TweenService:Create(Child, TweenInfo.new(1), {TextTransparency = (Children > 1) and 0.5 or 0}):Play()
+			end)
+			pcall(function()
+				local Children = #NavBarContent:GetChildren() - 2
+				TweenService:Create(Child, TweenInfo.new(1), {ImageTransparency = (Children > 1) and 0.5 or 0}):Play()
+			end)
+			pcall(function()
+				local Children = #NavBarContent:GetChildren() - 2
+				TweenService:Create(Child:FindFirstChildWhichIsA("ImageLabel"), TweenInfo.new(1), {ImageTransparency = (Children > 1) and 0.5 or 0}):Play()
+			end)
 			pcall(function()
 				Child.TextColor3 = ThisTheme.NavBar
 			end)
@@ -391,6 +421,18 @@ local NavBar = {
 		
 		NavBarContent.ChildAdded:Connect(function(Child)
 			pcall(function()
+				local Children = #NavBarContent:GetChildren() - 2
+				TweenService:Create(Child, TweenInfo.new(1), {TextTransparency = (Children > 1) and 0.5 or 0}):Play()
+			end)
+			pcall(function()
+				local Children = #NavBarContent:GetChildren() - 2
+				TweenService:Create(Child, TweenInfo.new(1), {ImageTransparency = (Children > 1) and 0.5 or 0}):Play()
+			end)
+			pcall(function()
+				local Children = #NavBarContent:GetChildren() - 2
+				TweenService:Create(Child:FindFirstChildWhichIsA("ImageLabel"), TweenInfo.new(1), {ImageTransparency = (Children > 1) and 0.5 or 0}):Play()
+			end)
+			pcall(function()
 				Child.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,30)
 			end)
 			pcall(function()
@@ -422,7 +464,10 @@ function TryAddMenu(Object, Menu, ReturnTable)
 		local MenuToggle = false
 		
 		local MenuButton = Objects.new("Menu")
+		MenuButton.ImageTransparency = 1
 		MenuButton.Parent = Object
+		
+		TweenService:Create(MenuButton, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
 		
 		local Size = Total * 30 + ((Total + 1) * 2)
 		
@@ -513,10 +558,12 @@ function CreateNewButton(ButtonConfig, Parent)
 	Button.Name = "Button"
 	Button.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,30)
 	Button.ImageColor3 = ThisTheme.Button
+	Button.ImageTransparency = 1
 	Button.Parent = Parent
 	
 	local ButtonShadow = Objects.new("Shadow")
 	ButtonShadow.ImageColor3 = ThisTheme.Button
+	ButtonShadow.ImageTransparency = 1
 	ButtonShadow.Parent = Button
 	
 	local ButtonLabel = Objects.new("Label")
@@ -525,7 +572,12 @@ function CreateNewButton(ButtonConfig, Parent)
 	ButtonLabel.Font = Enum.Font.GothamSemibold
 	ButtonLabel.TextSize = 14
 	ButtonLabel.ClipsDescendants = true
+	ButtonLabel.TextTransparency = 1
 	ButtonLabel.Parent = Button
+	
+	TweenService:Create(Button, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+	TweenService:Create(ButtonShadow, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+	TweenService:Create(ButtonLabel, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
 	
 	Button.MouseButton1Down:Connect(function()
 		ButtonCallback()
@@ -563,10 +615,14 @@ function Material.Load(Config)
 	
 	local MainFrame = Objects.new("Round")
 	MainFrame.Name = "MainFrame"
-	MainFrame.Size = UDim2.fromOffset(SizeX, SizeY)
+	MainFrame.Size = UDim2.fromOffset(0,SizeY)
 	MainFrame.Position = UDim2.fromScale(0.5,0.5) - UDim2.fromOffset(SizeX/2,SizeY/2)
 	MainFrame.ImageColor3 = Theme.MainFrame
 	MainFrame.Parent = NewInstance
+	
+	TweenService:Create(MainFrame, TweenInfo.new(1), {Size = UDim2.fromOffset(SizeX,SizeY)}):Play()
+	
+	wait(1)
 	
 	local MainShadow = Objects.new("Shadow")
 	MainShadow.ImageColor3 = Theme.MainFrame
@@ -576,24 +632,26 @@ function Material.Load(Config)
 	TitleBar.Name = "TitleBar"
 	TitleBar.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,30)
 	TitleBar.ImageColor3 = Theme.TitleBar
+	TitleBar.ImageTransparency = 1
 	TitleBar.Parent = MainFrame
 	
 	local ExtraBar = Objects.new("Frame")
 	ExtraBar.Name = "Hidden"
 	ExtraBar.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,5)
 	ExtraBar.Position = UDim2.fromScale(0,1) - UDim2.fromOffset(0,5)
-	ExtraBar.BackgroundTransparency = 0
 	ExtraBar.BackgroundColor3 = Theme.TitleBar
 	ExtraBar.Parent = TitleBar
 	
 	local TitleShadow = Objects.new("Shadow")
 	TitleShadow.ImageColor3 = Theme.TitleBar
+	TitleShadow.ImageTransparency = 1
 	TitleShadow.Parent = TitleBar
 	
 	local TitleText = Objects.new("Button")
 	TitleText.Name = "Title"
 	TitleText.Text = Title
 	TitleText.TextColor3 = Theme.TitleBarAccent
+	TitleText.TextTransparency = 1
 	TitleText.Font = Enum.Font.GothamBold
 	TitleText.Parent = TitleBar
 	
@@ -618,10 +676,12 @@ function Material.Load(Config)
 	MinimiseButton.Size = UDim2.fromOffset(20,20)
 	MinimiseButton.Position = UDim2.fromScale(1,0) + UDim2.fromOffset(-25,5)
 	MinimiseButton.ImageColor3 = Theme.Minimise
+	MinimiseButton.ImageTransparency = 1
 	MinimiseButton.Parent = TitleBar
 	
 	local MinimiseShadow = Objects.new("Shadow")
 	MinimiseShadow.ImageColor3 = Theme.MinimiseAccent
+	MinimiseShadow.ImageTransparency = 1
 	MinimiseShadow.Parent = MinimiseButton
 	
 	MinimiseButton.MouseButton1Down:Connect(function()
@@ -644,18 +704,37 @@ function Material.Load(Config)
 	Content.ImageColor3 = Theme.Content
 	Content.Size = UDim2.fromScale(1,1) - UDim2.fromOffset(10,75)
 	Content.Position = UDim2.fromOffset(5,70)
-	Content.ImageTransparency = 0.9
+	Content.ImageTransparency = 1
 	Content.Parent = MainFrame
 	
 	local NavigationBar, NavigationBarContent, NavBarMenu, NavBarOverlay = NavBar[Styles[Style]]()
 	NavigationBar.Parent = MainFrame
 	
+	TweenService:Create(TitleBar, TweenInfo.new(1), {ImageTransparency = 0}):Play()
+	TweenService:Create(ExtraBar, TweenInfo.new(1), {BackgroundTransparency = 0}):Play()
+	TweenService:Create(TitleShadow, TweenInfo.new(1), {ImageTransparency = 0}):Play()
+	TweenService:Create(TitleText, TweenInfo.new(1), {TextTransparency = 0}):Play()
+	TweenService:Create(MinimiseButton, TweenInfo.new(1), {ImageTransparency = 0}):Play()
+	TweenService:Create(MinimiseShadow, TweenInfo.new(1), {ImageTransparency = 0}):Play()
+	TweenService:Create(Content, TweenInfo.new(1), {ImageTransparency = 0.8}):Play()
+	
+	wait(1)
+	
 	if NavBarMenu then
-		TitleText.Size -= UDim2.fromOffset(25,0)
-		TitleText.Position += UDim2.fromOffset(25,0)
-		Content.Size += UDim2.fromOffset(0,35)
-		Content.Position -= UDim2.fromOffset(0,35)
+		TweenService:Create(TitleText, TweenInfo.new(0.5), {
+			Size = TitleText.Size - UDim2.fromOffset(25,0),
+			Position = TitleText.Position + UDim2.fromOffset(25,0)
+		}):Play()
+		TweenService:Create(Content, TweenInfo.new(0.5), {
+			Size = Content.Size + UDim2.fromOffset(0,35),
+			Position = Content.Position - UDim2.fromOffset(0,35)
+		}):Play()
+		
+		NavBarMenu.ImageTransparency = 1
 		NavBarMenu.Parent = TitleBar
+		
+		TweenService:Create(NavBarMenu, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+		
 		NavBarOverlay.Parent = MainFrame
 		
 		local MenuToggle = false
@@ -814,7 +893,7 @@ function Material.Load(Config)
 				Button.Text = Title:upper()
 				Button.Size = UDim2.fromScale(0,1) + UDim2.fromOffset(TextSize+35)
 				Button.ZIndex = 200
-				Button.TextTransparency = (TabCount > 0) and 0.5 or 0
+				Button.TextTransparency = 1
 			end
 			
 			local FetchURL = "rbxassetid://"..ImageID
@@ -828,7 +907,7 @@ function Material.Load(Config)
 			NewImage.ScaleType = Enum.ScaleType.Stretch
 			NewImage.Image = Image
 			NewImage.ZIndex = 200
-			NewImage.ImageTransparency = (TabCount > 0) and 0.5 or 0
+			NewImage.ImageTransparency = 1
 
 			if Button then
 				NewImage.Position = UDim2.fromScale(0,0.5) - UDim2.fromOffset(0,10)
@@ -854,7 +933,7 @@ function Material.Load(Config)
 			Button.Text = Title:upper()
 			Button.Size = UDim2.fromScale(0,1) + UDim2.fromOffset(TextSize+10)
 			Button.ZIndex = 200
-			Button.TextTransparency = (TabCount > 0) and 0.5 or 0
+			Button.TextTransparency = 1
 		end
 		
 		Button.Parent = NavigationBarContent
@@ -926,6 +1005,7 @@ function Material.Load(Config)
 			DropdownBar.Name = "TitleBar"
 			DropdownBar.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,30)
 			DropdownBar.ImageColor3 = Theme.Dropdown
+			DropdownBar.ImageTransparency = 1
 			DropdownBar.Parent = Dropdown
 			
 			local DropdownTitle = Objects.new("Button")
@@ -933,6 +1013,7 @@ function Material.Load(Config)
 			DropdownTitle.Font = Enum.Font.GothamSemibold
 			DropdownTitle.Text = DropdownText
 			DropdownTitle.TextColor3 = Theme.DropdownAccent
+			DropdownTitle.TextTransparency = 1
 			DropdownTitle.TextSize = 14
 			DropdownTitle.Parent = DropdownBar
 			
@@ -941,7 +1022,7 @@ function Material.Load(Config)
 			DropdownToggle.Size = UDim2.fromOffset(24,24)
 			DropdownToggle.Position = UDim2.fromScale(1,0.5) - UDim2.fromOffset(27,12)
 			DropdownToggle.ImageColor3 = Theme.DropdownAccent
-			DropdownToggle.ImageTransparency = 0.8
+			DropdownToggle.ImageTransparency = 1 -- 0.8
 			DropdownToggle.Parent = DropdownBar
 			
 			local DropdownButton = Objects.new("Round")
@@ -951,7 +1032,13 @@ function Material.Load(Config)
 			DropdownButton.Size = UDim2.fromScale(1,1) - UDim2.fromOffset(4,4)
 			DropdownButton.Position = UDim2.fromOffset(2,2)
 			DropdownButton.ImageColor3 = Theme.DropdownAccent
+			DropdownButton.ImageTransparency = 1
 			DropdownButton.Parent = DropdownToggle
+			
+			TweenService:Create(DropdownBar, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+			TweenService:Create(DropdownTitle, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+			TweenService:Create(DropdownToggle, TweenInfo.new(0.5), {ImageTransparency = 0.8}):Play()
+			TweenService:Create(DropdownButton, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
 			
 			local DropdownContent = Objects.new("Frame")
 			DropdownContent.Name = "Content"
@@ -961,7 +1048,7 @@ function Material.Load(Config)
 			DropdownContent.Parent = Dropdown
 			
 			local NumberOfOptions = #DropdownOptions
-			local DropdownToggle = false
+			local DropToggle = false
 			local DropdownSize = UDim2.fromScale(1,0) + UDim2.fromOffset(0,(NumberOfOptions*20) + ((NumberOfOptions - 1) * 5))
 			
 			local DropdownList = Objects.new("UIListLayout")
@@ -970,7 +1057,7 @@ function Material.Load(Config)
 			DropdownList.Parent = DropdownContent
 			
 			DropdownList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-				if DropdownToggle then
+				if DropToggle then
 					DropdownContent.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(DropdownList.AbsoluteContentSize.Y)
 					DropdownSize = UDim2.fromScale(1,0) + UDim2.fromOffset(DropdownList.AbsoluteContentSize.Y)
 				end
@@ -985,15 +1072,22 @@ function Material.Load(Config)
 				NewButton.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,20)
 				NewButton.MouseButton1Down:Connect(function()
 					DropdownCallback(Value)
+					DropdownTitle.Text = DropdownText..": "..Value
 				end)
 			end)
 			
 			DropdownTitle.MouseButton1Down:Connect(function()
-				DropdownToggle = not DropdownToggle
-				TweenService:Create(DropdownButton, TweenInfo.new(0.15), {Rotation = DropdownToggle and 135 or 0}):Play()
-				TweenService:Create(DropdownContent, TweenInfo.new(0.15), {Size = DropdownToggle and DropdownSize or UDim2.fromScale(1,0)}):Play()
-				TweenService:Create(Dropdown, TweenInfo.new(0.15), {Size = DropdownToggle and (DropdownSize + UDim2.fromOffset(0,35)) or (UDim2.fromScale(1,0) + UDim2.fromOffset(0,30))}):Play()
+				DropToggle = not DropToggle
+				TweenService:Create(DropdownButton, TweenInfo.new(0.15), {Rotation = DropToggle and 135 or 0}):Play()
+				TweenService:Create(DropdownContent, TweenInfo.new(0.15), {Size = DropToggle and DropdownSize or UDim2.fromScale(1,0)}):Play()
+				TweenService:Create(Dropdown, TweenInfo.new(0.15), {Size = DropToggle and (DropdownSize + UDim2.fromOffset(0,35)) or (UDim2.fromScale(1,0) + UDim2.fromOffset(0,30))}):Play()
 			end)
+			
+			local MenuAdded, MenuButton = TryAddMenu(DropdownBar, Menu, {})
+			
+			if MenuAdded then
+				DropdownToggle.Position -= UDim2.fromOffset(25,0)
+			end
 		end
 		
 		function OptionLibrary.ChipSet(ChipSetConfig)
@@ -1014,7 +1108,7 @@ function Material.Load(Config)
 				ChipSet.Name = "ChipSet"
 				ChipSet.Size = Size
 				ChipSet.ImageColor3 = Theme.ChipSet
-				ChipSet.ImageTransparency = 0.9
+				ChipSet.ImageTransparency = 1
 				ChipSet.Parent = PageContentFrame
 				
 				local ChipList = Objects.new("UIListLayout")
@@ -1041,23 +1135,26 @@ function Material.Load(Config)
 				
 				ChipSetCallback(BuildTable)
 				
+				TweenService:Create(ChipSet, TweenInfo.new(0.5), {ImageTransparency = 0.9}):Play()
+				
 				table.foreach(ChipSetOptions, function(Key, Value)
 					local ChipItem = Objects.new("SmoothButton")
 					ChipItem.Name = "ChipItem"
 					ChipItem.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,30)
 					ChipItem.ImageColor3 = BuildTable[Key] and Theme.ChipSet or Theme.ChipSetAccent
+					ChipItem.ImageTransparency = 1
 					ChipItem.Parent = ChipSet
 					
 					local ChipShadow = Objects.new("Shadow")
 					ChipShadow.ImageColor3 = BuildTable[Key] and Theme.ChipSet or Theme.ChipSetAccent
-					ChipShadow.ImageTransparency = 0.2
+					ChipShadow.ImageTransparency = 1
 					ChipShadow.Parent = ChipItem
 					
 					local Tick = Objects.new("Round")
 					Tick.ScaleType = Enum.ScaleType.Stretch
 					Tick.Image = "http://www.roblox.com/asset/?id=5554953789"
 					Tick.ImageColor3 = Theme.ChipSetAccent
-					Tick.ImageTransparency = BuildTable[Key] and 0 or 1
+					Tick.ImageTransparency = 1
 					Tick.Size = UDim2.fromScale(1,1) - UDim2.fromOffset(10,10)
 					Tick.SizeConstraint = Enum.SizeConstraint.RelativeYY
 					Tick.Position = UDim2.fromOffset(5,5)
@@ -1070,7 +1167,13 @@ function Material.Load(Config)
 					ChipLabel.Font = Enum.Font.Gotham
 					ChipLabel.TextSize = 12
 					ChipLabel.TextColor3 = BuildTable[Key] and Theme.ChipSetAccent or Theme.ChipSet
+					ChipLabel.TextTransparency = 1
 					ChipLabel.Parent = ChipItem
+					
+					TweenService:Create(ChipItem, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+					TweenService:Create(ChipShadow, TweenInfo.new(0.5), {ImageTransparency = 0.2}):Play()
+					TweenService:Create(Tick, TweenInfo.new(0.5), {ImageTransparency = BuildTable[Key] and 0 or 1}):Play()
+					TweenService:Create(ChipLabel, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
 					
 					local ChipMenu
 					
@@ -1118,12 +1221,12 @@ function Material.Load(Config)
 				DataTable.Name = "DataTable"
 				DataTable.Size = Size
 				DataTable.ImageColor3 = Theme.DataTable
-				DataTable.ImageTransparency = 0.9
+				DataTable.ImageTransparency = 1
 				DataTable.Parent = PageContentFrame
 				
 				local DataShadow = Objects.new("Shadow")
 				DataShadow.ImageColor3 = Theme.DataTable
-				DataShadow.ImageTransparency = 0.9
+				DataShadow.ImageTransparency = 1
 				DataShadow.Parent = DataTable
 				
 				local DataContainer = Objects.new("Frame")
@@ -1154,12 +1257,15 @@ function Material.Load(Config)
 				
 				DataTableCallback(BuildTable)
 				
+				TweenService:Create(DataTable, TweenInfo.new(0.5), {ImageTransparency = 0.9}):Play()
+				TweenService:Create(DataShadow, TweenInfo.new(0.5), {ImageTransparency = 0.8}):Play()
+				
 				table.foreach(DataTableOptions, function(Key, Value)
 					local DataItem = Objects.new("SmoothButton")
 					DataItem.Name = "DataItem"
 					DataItem.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,30)
 					DataItem.ImageColor3 = BuildTable[Key] and Theme.DataTable or Theme.DataTableAccent
-					DataItem.ImageTransparency = BuildTable[Key] and 0.8 or 0
+					DataItem.ImageTransparency = 1
 					DataItem.Parent = DataContainer
 					
 					local DataTracker = Objects.new("Round")
@@ -1167,7 +1273,7 @@ function Material.Load(Config)
 					DataTracker.Size = UDim2.fromOffset(24,24)
 					DataTracker.Position = UDim2.fromScale(0,0.5) + UDim2.fromOffset(3,-12)
 					DataTracker.ImageColor3 = Theme.DataTable
-					DataTracker.ImageTransparency = BuildTable[Key] and 0 or 0.8
+					DataTracker.ImageTransparency = 1
 					DataTracker.Parent = DataItem
 					
 					local Tick = Objects.new("Round")
@@ -1175,7 +1281,7 @@ function Material.Load(Config)
 					Tick.ScaleType = Enum.ScaleType.Stretch
 					Tick.Image = "http://www.roblox.com/asset/?id=5554953789"
 					Tick.ImageColor3 = Theme.DataTableAccent
-					Tick.ImageTransparency = BuildTable[Key] and 0 or 0.7
+					Tick.ImageTransparency = 1
 					Tick.Size = UDim2.fromScale(1,1) - UDim2.fromOffset(4,4)
 					Tick.SizeConstraint = Enum.SizeConstraint.RelativeYY
 					Tick.Position = UDim2.fromOffset(2,2)
@@ -1189,7 +1295,13 @@ function Material.Load(Config)
 					DataLabel.Font = Enum.Font.Gotham
 					DataLabel.TextSize = 14
 					DataLabel.TextColor3 = Theme.DataTable
+					DataLabel.TextTransparency = 1
 					DataLabel.Parent = DataItem
+					
+					TweenService:Create(DataItem, TweenInfo.new(0.5), {ImageTransparency = BuildTable[Key] and 0.8 or 0}):Play()
+					TweenService:Create(DataTracker, TweenInfo.new(0.5), {ImageTransparency = BuildTable[Key] and 0 or 0.8}):Play()
+					TweenService:Create(Tick, TweenInfo.new(0.5), {ImageTransparency = BuildTable[Key] and 0 or 0.7}):Play()
+					TweenService:Create(DataLabel, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
 					
 					local DataMenu
 					
@@ -1230,6 +1342,7 @@ function Material.Load(Config)
 			ColorPicker.Name = "ColorPicker"
 			ColorPicker.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,40)
 			ColorPicker.ImageColor3 = Theme.ColorPicker
+			ColorPicker.ImageTransparency = 1
 			ColorPicker.ClipsDescendants = true
 			ColorPicker.Parent = PageContentFrame
 			
@@ -1243,12 +1356,12 @@ function Material.Load(Config)
 			ColorBar.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(-10,30)
 			ColorBar.Position = UDim2.fromOffset(5,5)
 			ColorBar.ImageColor3 = Theme.ColorPickerAccent
-			ColorBar.ImageTransparency = 0.8
+			ColorBar.ImageTransparency = 1
 			ColorBar.Parent = ColorPicker
 			
 			local ColorShadow = Objects.new("Shadow")
 			ColorShadow.ImageColor3 = Theme.ColorPickerAccent
-			ColorShadow.ImageTransparency = 0.5 
+			ColorShadow.ImageTransparency = 1 
 			ColorShadow.Parent = ColorBar
 			
 			local ColorLabel = Objects.new("Label")
@@ -1257,6 +1370,7 @@ function Material.Load(Config)
 			ColorLabel.TextColor3 = Theme.ColorPickerAccent
 			ColorLabel.TextSize = 14
 			ColorLabel.Text = ColorPickerText
+			ColorLabel.TextTransparency = 1
 			ColorLabel.Parent = ColorBar
 			
 			local ColorTracker = Objects.new("Round")
@@ -1264,11 +1378,12 @@ function Material.Load(Config)
 			ColorTracker.Size = UDim2.fromOffset(50,20)
 			ColorTracker.Position = UDim2.fromScale(1,0) + UDim2.fromOffset(-55,5)
 			ColorTracker.ImageColor3 = ColorPickerDefault
+			ColorTracker.ImageTransparency = 1
 			ColorTracker.Parent = ColorBar
 			
 			local TrackerShadow = Objects.new("Shadow")
 			TrackerShadow.ImageColor3 = ColorTracker.ImageColor3
-			TrackerShadow.ImageTransparency = 0.5
+			TrackerShadow.ImageTransparency = 1
 			TrackerShadow.Parent = ColorTracker
 			
 			ColorTracker:GetPropertyChangedSignal("ImageColor3"):Connect(function()
@@ -1300,6 +1415,7 @@ function Material.Load(Config)
 			HueLabel.TextColor3 = Theme.ColorPickerAccent
 			HueLabel.TextSize = 12
 			HueLabel.Font = Enum.Font.GothamBold
+			HueLabel.TextTransparency = 1
 			HueLabel.Parent = Hue
 			
 			local SaturationLabel = HueLabel:Clone()
@@ -1340,6 +1456,7 @@ function Material.Load(Config)
 			local HueTracker = Objects.new("SmoothButton")
 			HueTracker.Name = "Tracker"
 			HueTracker.ImageColor3 = Color3.fromRGB(255,255,255)
+			HueTracker.ImageTransparency = 1
 			HueTracker.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(-40,20)
 			HueTracker.Position = UDim2.fromOffset(35,40)
 			HueTracker.Parent = ColorPicker
@@ -1354,6 +1471,7 @@ function Material.Load(Config)
 			
 			local HueShadow = Objects.new("Shadow")
 			HueShadow.ImageColor3 = Color3.fromRGB(255,255,255)
+			HueShadow.ImageTransparency = 1
 			HueShadow.Parent = HueTracker
 			
 			local SaturationShadow = HueShadow:Clone()
@@ -1376,6 +1494,22 @@ function Material.Load(Config)
 			SaturationGrad.Parent = SaturationTracker
 			local SaturationShadowGrad = SaturationGradient:Clone()
 			SaturationShadowGrad.Parent = SaturationShadow
+			
+			TweenService:Create(ColorPicker, TweenInfo.new(0.5), {ImageTransparency = 0.5}):Play()
+			TweenService:Create(ColorBar, TweenInfo.new(0.5), {ImageTransparency = 0.8}):Play()
+			TweenService:Create(ColorShadow, TweenInfo.new(0.5), {ImageTransparency = 0.5}):Play()
+			TweenService:Create(ColorLabel, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+			TweenService:Create(HueLabel, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+			TweenService:Create(SaturationLabel, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+			TweenService:Create(ValueLabel, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+			TweenService:Create(ColorTracker, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+			TweenService:Create(TrackerShadow, TweenInfo.new(0.5), {ImageTransparency = 0.2}):Play()
+			TweenService:Create(HueTracker, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+			TweenService:Create(ValueTracker, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+			TweenService:Create(SaturationTracker, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+			TweenService:Create(HueShadow, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+			TweenService:Create(SaturationShadow, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+			TweenService:Create(ValueShadow, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
 			
 			H:GetPropertyChangedSignal("Value"):Connect(function()
 				ColorTracker.ImageColor3 = Color3.fromHSV(H.Value,S.Value,V.Value)
@@ -1415,11 +1549,9 @@ function Material.Load(Config)
 			
 			HueTracker.MouseButton1Down:Connect(function()
 				H.Value = 1 - GetXY(HueTracker)
-                ColorPickerCallback(Color3.fromHSV(H,S,V))
 				local MouseMove, MouseKill
 				MouseMove = Mouse.Move:Connect(function()
 					H.Value = 1 - GetXY(HueTracker)
-                    ColorPickerCallback(Color3.fromHSV(H,S,V))
 				end)
 				MouseKill = InputService.InputEnded:Connect(function(UserInput)
 					if UserInput.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -1431,11 +1563,9 @@ function Material.Load(Config)
 			
 			ValueTracker.MouseButton1Down:Connect(function()
 				V.Value = 1 - GetXY(HueTracker)
-                ColorPickerCallback(Color3.fromHSV(H,S,V))
 				local MouseMove, MouseKill
 				MouseMove = Mouse.Move:Connect(function()
 					V.Value = 1 - GetXY(HueTracker)
-                    ColorPickerCallback(Color3.fromHSV(H,S,V))
 				end)
 				MouseKill = InputService.InputEnded:Connect(function(UserInput)
 					if UserInput.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -1447,11 +1577,9 @@ function Material.Load(Config)
 			
 			SaturationTracker.MouseButton1Down:Connect(function()
 				S.Value = 1 - GetXY(HueTracker)
-                ColorPickerCallback(Color3.fromHSV(H,S,V))
 				local MouseMove, MouseKill
 				MouseMove = Mouse.Move:Connect(function()
 					S.Value = 1 - GetXY(HueTracker)
-                    ColorPickerCallback(Color3.fromHSV(H,S,V))
 				end)
 				MouseKill = InputService.InputEnded:Connect(function(UserInput)
 					if UserInput.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -1479,7 +1607,7 @@ function Material.Load(Config)
 			Toggle.Name = "Toggle"
 			Toggle.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,30)
 			Toggle.ImageColor3 = Theme.Toggle
-			Toggle.ImageTransparency = 0.8
+			Toggle.ImageTransparency = 1
 			Toggle.Parent = PageContentFrame
 			
 			local ToggleTracker = Objects.new("Round")
@@ -1490,7 +1618,7 @@ function Material.Load(Config)
 			ToggleTracker.Size = UDim2.fromOffset(26,12)
 			ToggleTracker.Position = UDim2.fromScale(1,0.5) - UDim2.fromOffset(41,6)
 			ToggleTracker.ImageColor3 = Theme.Toggle
-			ToggleTracker.ImageTransparency = 0.8
+			ToggleTracker.ImageTransparency = 1
 			ToggleTracker.Parent = Toggle
 			
 			local Dot = Objects.new("Circle")
@@ -1498,6 +1626,7 @@ function Material.Load(Config)
 			Dot.Size = UDim2.fromOffset(16,16)
 			Dot.Position = UDim2.fromScale(0,0.5) - UDim2.fromOffset(8,8)
 			Dot.ImageColor3 = Theme.ToggleAccent
+			Dot.ImageTransparency = 1
 			Dot.Parent = ToggleTracker
 			
 			local DotShadow = Objects.new("Round")
@@ -1507,7 +1636,7 @@ function Material.Load(Config)
 			DotShadow.Size = UDim2.fromOffset(31,31)
 			DotShadow.Position = UDim2.fromOffset(-8,-8)
 			DotShadow.ImageColor3 = Theme.Toggle
-			DotShadow.ImageTransparency = 0.5
+			DotShadow.ImageTransparency = 1
 			DotShadow.Parent = Dot
 			
 			local ToggleLabel = Objects.new("Label")
@@ -1515,8 +1644,15 @@ function Material.Load(Config)
 			ToggleLabel.TextSize = 14
 			ToggleLabel.Text = ToggleText
 			ToggleLabel.TextColor3 = Theme.Toggle
+			ToggleLabel.TextTransparency = 1
 			ToggleLabel.ClipsDescendants = true
 			ToggleLabel.Parent = Toggle
+			
+			TweenService:Create(Toggle, TweenInfo.new(0.5), {ImageTransparency = 0.8}):Play()
+			TweenService:Create(ToggleTracker, TweenInfo.new(0.5), {ImageTransparency = 0.5}):Play()
+			TweenService:Create(Dot, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+			TweenService:Create(DotShadow, TweenInfo.new(0.5), {ImageTransparency = 0.5}):Play()
+			TweenService:Create(ToggleLabel, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
 			
 			TweenService:Create(Dot, TweenInfo.new(0.15), {Position = (ToggleDefault and UDim2.fromScale(1,0.5) or UDim2.fromScale(0,0.5)) - UDim2.fromOffset(8,8), ImageColor3 = ToggleDefault and Theme.Toggle or Theme.ToggleAccent}):Play()
 			ToggleCallback(ToggleDefault)
@@ -1555,10 +1691,12 @@ function Material.Load(Config)
 			Slider.Name = "Slider"
 			Slider.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,35)
 			Slider.ImageColor3 = Theme.Slider
+			Slider.ImageTransparency = 1
 			Slider.Parent = PageContentFrame
 			
 			local SliderShadow = Objects.new("Shadow")
 			SliderShadow.ImageColor3 = Theme.Slider
+			SliderShadow.ImageTransparency = 1
 			SliderShadow.Parent = Slider
 			
 			local SliderTitle = Objects.new("Label")
@@ -1567,11 +1705,13 @@ function Material.Load(Config)
 			SliderTitle.TextSize = 14
 			SliderTitle.Font = Enum.Font.GothamSemibold
 			SliderTitle.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(-5,25)
+			SliderTitle.TextTransparency = 1
 			SliderTitle.Parent = Slider
 			
 			local SliderValue = Objects.new("Label")
 			SliderValue.Text = tostring(SliderDef)
 			SliderValue.TextColor3 = Theme.SliderAccent
+			SliderValue.TextTransparency = 1
 			SliderValue.TextSize = 14
 			SliderValue.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(-5,25)
 			SliderValue.Position = UDim2.fromScale(0,0)
@@ -1581,13 +1721,13 @@ function Material.Load(Config)
 			
 			local SliderTracker = Objects.new("Frame")
 			SliderTracker.BackgroundColor3 = Theme.SliderAccent
-			SliderTracker.BackgroundTransparency = 0.5
+			SliderTracker.BackgroundTransparency = 1
 			SliderTracker.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(-20,3)
 			SliderTracker.Position = UDim2.fromScale(0,1) + UDim2.fromOffset(10,-10)
 			SliderTracker.Parent = Slider
 			
 			local SliderFill = SliderTracker:Clone()
-			SliderFill.BackgroundTransparency = 0
+			SliderFill.BackgroundTransparency = 1
 			SliderFill.Position = UDim2.fromScale(0,0)
 			SliderFill.Size = UDim2.fromScale(DefaultScale,1)
 			SliderFill.Parent = SliderTracker
@@ -1600,19 +1740,27 @@ function Material.Load(Config)
 			
 			local SliderDot = Objects.new("CircleButton")
 			SliderDot.Size = UDim2.fromOffset(10,10)
-			SliderDot.Position = UDim2.fromScale(DefaultScale,0.5) - UDim2.fromOffset(5,5)
+			SliderDot.Position = UDim2.fromScale(0.5,0.5) - UDim2.fromOffset(5,5)
 			SliderDot.ImageColor3 = Theme.SliderAccent
-			SliderDot.ImageTransparency = 0
+			SliderDot.ImageTransparency = 1
 			SliderDot.ZIndex = 50
 			SliderDot.Parent = SliderTracker
 			
 			local SliderFadedDot = Objects.new("Circle")
 			SliderFadedDot.Size = UDim2.fromOffset(SizeFromScale,SizeFromScale)
-			SliderFadedDot.Position = UDim2.fromScale(0.5,0.5) - UDim2.fromOffset(SizeFromScale/2,SizeFromScale/2)
+			SliderFadedDot.Position = UDim2.fromScale(DefaultScale,0.5) - UDim2.fromOffset(SizeFromScale/2,SizeFromScale/2)
 			SliderFadedDot.ImageColor3 = Theme.SliderAccent
 			SliderFadedDot.ImageTransparency = 1
 			SliderFadedDot.ZIndex = 50
 			SliderFadedDot.Parent = SliderDot
+			
+			TweenService:Create(Slider, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+			TweenService:Create(SliderShadow, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+			TweenService:Create(SliderTitle, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+			TweenService:Create(SliderValue, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+			TweenService:Create(SliderTracker, TweenInfo.new(0.5), {BackgroundTransparency = 0.5}):Play()
+			TweenService:Create(SliderFill, TweenInfo.new(0.5), {BackgroundTransparency = 0}):Play()
+			TweenService:Create(SliderDot, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
 			
 			SliderDot.MouseButton1Down:Connect(function()
 				TweenService:Create(SliderFadedDot, TweenInfo.new(0.15), {ImageTransparency = 0.8}):Play()
