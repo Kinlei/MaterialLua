@@ -2,7 +2,7 @@ local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinl
 
 local X = Material.Load({
 	Title = "ChibuHub",
-	Style = 2,
+	Style = 3,
 	SizeX = 500,
 	SizeY = 350,
 	Theme = "Dark"
@@ -126,6 +126,24 @@ local G = Y.ColorPicker({
 			X.Banner({
 				Text = "This changes the color of your ESP."
 			})
+		end
+	}
+})
+
+local H = Y.TextField({
+	Text = "Country",
+	Callback = function(Value)
+		print(Value)
+	end,
+	Menu = {
+		GB = function(self)
+			self.SetText("GB")
+		end,
+		JP = function(self)
+			self.SetText("JP")
+		end,
+		KO = function(self)
+			self.SetText("KO")
 		end
 	}
 })
