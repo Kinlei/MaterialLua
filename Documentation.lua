@@ -60,7 +60,7 @@ local NewDataTable = NewPage.DataTable({
 
 local NewColorPicker = NewPage.ColorPicker({
   -> Text <string[any]>
-  -> Default <color3[any]>
+  -> Default <color3>
   -> Callback <function(value)>
   -> Menu <table>
 })
@@ -70,3 +70,39 @@ local NewTextField = NewPage.TextField({
   -> Callback <function(value)>
   -> Menu <table>
 })
+
+-- Custom Functions
+               
+<void> NewButton:SetText(<string[any]>)
+<string> NewButton:GetText(<void>)
+                
+<void> NewToggle:SetText(<string[any]>)
+<string> NewToggle:GetText(<void>)
+<void> NewToggle:SetState(<bool>)
+<bool> NewToggle:GetState(<void>)
+                
+<void> NewSlider:SetText(<string[any]>)
+<string> NewSlider:GetText(<void>)
+<void> NewSlider:SetMin(<number[any]>)
+<void> NewSlider:SetMax(<number[any]>)
+<number> NewSlider:GetMin(<void>)
+<number> NewSlider:GetMax(<void>)
+                
+<void> NewDropdown:SetText(<string[any]>)
+<string> NewDropdown:GetText(<void>)
+<void> NewDropdown:SetOptions(<table>)
+<table> NewDropdown:GetOptions(<void>)
+                
+<void> NewChipSet:SetOptions(<table>)
+<table> NewChipSet:GetOptions(<void>)
+                
+<void> NewDataTable:SetOptions(<table>)
+<table> NewDataTable:GetOptions(<void>)
+                
+<void> NewColorPicker:SetText(<table>)
+<void> NewColorPicker:SetColor(<color3>)
+<string> NewColorPicker:GetText(<void>)
+<color3> NewColorPicker:GetColor(<void>)
+                
+<void> NewTextField:SetText(<string[any])
+<string> NewTextField:GetText(<void>)
