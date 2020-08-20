@@ -1004,7 +1004,19 @@ function Material.Load(Config)
 		local OptionLibrary = {}
 		
 		function OptionLibrary.Button(ButtonConfig)
-			CreateNewButton(ButtonConfig, PageContentFrame)
+			local NewButton = CreateNewButton(ButtonConfig, PageContentFrame)
+			
+			local ButtonLibrary = {}
+			
+			function ButtonLibrary:SetText(Value)
+				NewButton.Text = Value
+			end
+			
+			function ButtonLibrary:GetText()
+				return NewButton.Text
+			end
+			
+			return ButtonLibrary
 		end
 		
 		function OptionLibrary.Dropdown(DropdownConfig)
@@ -1106,6 +1118,51 @@ function Material.Load(Config)
 				DropdownToggle.Position -= UDim2.fromOffset(25,0)
 				MenuButton.ImageColor3 = Theme.DropdownAccent
 			end
+			
+			local DropdownLibrary = {}
+			
+			function DropdownLibrary:SetOptions(NewMenu)
+				DropdownOptions = NewMenu or {}
+				NumberOfOptions = #DropdownOptions
+				DropdownSize = UDim2.fromScale(1,0) + UDim2.fromOffset(0,(NumberOfOptions*20) + ((NumberOfOptions - 1) * 5))
+				
+				if DropdownContent then
+					DropdownContent:Destroy()
+				end
+				
+				TweenService:Create(Dropdown, TweenInfo.new(0.15), {Size = DropToggle and (DropdownSize + UDim2.fromOffset(0,35)) or (UDim2.fromScale(1,0) + UDim2.fromOffset(0,30))}):Play()
+				
+				DropdownContent = Objects.new("Frame")
+				DropdownContent.Name = "Content"
+				DropdownContent.Size = DropToggle and DropdownSize or UDim2.fromScale(1,0)
+				DropdownContent.Position = UDim2.fromOffset(0,35)
+				DropdownContent.ClipsDescendants = true
+				DropdownContent.Parent = Dropdown
+				
+				local DropdownList = Objects.new("UIListLayout")
+				DropdownList.SortOrder = Enum.SortOrder.LayoutOrder
+				DropdownList.Padding = UDim.new(0,5)
+				DropdownList.Parent = DropdownContent
+				
+				table.foreach(DropdownOptions, function(_, Value)
+					local NewButton = CreateNewButton({
+						Text = Value,
+						Callback = function() end
+					}, DropdownContent)
+					
+					NewButton.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,20)
+					NewButton.MouseButton1Down:Connect(function()
+						DropdownCallback(Value)
+						DropdownTitle.Text = DropdownText..": "..Value
+					end)
+				end)
+			end
+			
+			function DropdownLibrary:GetOptions()
+				return DropdownOptions
+			end
+			
+			return DropdownLibrary
 		end
 		
 		function OptionLibrary.ChipSet(ChipSetConfig)
@@ -1218,6 +1275,122 @@ function Material.Load(Config)
 						ChipSetCallback(BuildTable)
 					end)
 				end)
+				
+				local ChipSetLibrary = {}
+				
+				function ChipSetLibrary:SetOptions(NewMenu)
+					ChipSetOptions = NewMenu or {}
+					
+					TotalOptions = 0
+			
+					table.foreach(ChipSetOptions, function()
+						TotalOptions += 1
+					end)
+					
+					for _, Element in next, ChipSet:GetChildren() do
+						Element:Destroy()
+					end
+					
+					Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,(TotalOptions*30)+((TotalOptions+1)*5))
+					
+					TweenService:Create(ChipSet, TweenInfo.new(0.15), {Size = Size}):Play()
+					
+					local ChipList = Objects.new("UIListLayout")
+					ChipList.SortOrder = Enum.SortOrder.LayoutOrder
+					ChipList.Padding = UDim.new(0,5)
+					ChipList.Parent = ChipSet
+					
+					local ChipPadding = Objects.new("UIPadding")
+					ChipPadding.PaddingBottom = UDim.new(0,5)
+					ChipPadding.PaddingTop = UDim.new(0,5)
+					ChipPadding.PaddingRight= UDim.new(0,5)
+					ChipPadding.PaddingLeft = UDim.new(0,5)
+					ChipPadding.Parent = ChipSet
+					
+					local BuildTable = {}
+					
+					table.foreach(ChipSetOptions, function(Key, Value)
+						if typeof(Value) == "table" then
+							BuildTable[Key] = Value.Enabled
+						else
+							BuildTable[Key] = Value
+						end
+					end)
+					
+					ChipSetCallback(BuildTable)
+					
+					TweenService:Create(ChipSet, TweenInfo.new(0.5), {ImageTransparency = 0.9}):Play()
+					
+					table.foreach(ChipSetOptions, function(Key, Value)
+						local ChipItem = Objects.new("SmoothButton")
+						ChipItem.Name = "ChipItem"
+						ChipItem.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,30)
+						ChipItem.ImageColor3 = BuildTable[Key] and Theme.ChipSet or Theme.ChipSetAccent
+						ChipItem.ImageTransparency = 1
+						ChipItem.Parent = ChipSet
+						
+						local ChipShadow = Objects.new("Shadow")
+						ChipShadow.ImageColor3 = BuildTable[Key] and Theme.ChipSet or Theme.ChipSetAccent
+						ChipShadow.ImageTransparency = 1
+						ChipShadow.Parent = ChipItem
+						
+						local Tick = Objects.new("Round")
+						Tick.ScaleType = Enum.ScaleType.Stretch
+						Tick.Image = "http://www.roblox.com/asset/?id=5554953789"
+						Tick.ImageColor3 = Theme.ChipSetAccent
+						Tick.ImageTransparency = 1
+						Tick.Size = UDim2.fromScale(1,1) - UDim2.fromOffset(10,10)
+						Tick.SizeConstraint = Enum.SizeConstraint.RelativeYY
+						Tick.Position = UDim2.fromOffset(5,5)
+						Tick.Parent = ChipItem
+						
+						local ChipLabel = Objects.new("Label")
+						ChipLabel.Size = BuildTable[Key] and (UDim2.fromScale(1,1) - UDim2.fromOffset(30)) or (UDim2.fromScale(1,1) - UDim2.fromOffset(5))
+						ChipLabel.Position = BuildTable[Key] and UDim2.fromOffset(30) or UDim2.fromOffset(5)
+						ChipLabel.Text = Key
+						ChipLabel.Font = Enum.Font.Gotham
+						ChipLabel.TextSize = 12
+						ChipLabel.TextColor3 = BuildTable[Key] and Theme.ChipSetAccent or Theme.ChipSet
+						ChipLabel.TextTransparency = 1
+						ChipLabel.Parent = ChipItem
+						
+						TweenService:Create(ChipItem, TweenInfo.new(0.5), {ImageTransparency = 0}):Play()
+						TweenService:Create(ChipShadow, TweenInfo.new(0.5), {ImageTransparency = 0.2}):Play()
+						TweenService:Create(Tick, TweenInfo.new(0.5), {ImageTransparency = BuildTable[Key] and 0 or 1}):Play()
+						TweenService:Create(ChipLabel, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+						
+						local ChipMenu
+						
+						if typeof(Value) == "table" then
+							local Menu = Value.Menu or {}
+							
+							local MenuAdded, MenuButton = TryAddMenu(ChipItem, Menu, {})
+							
+							MenuButton.ImageColor3 = BuildTable[Key] and Theme.ChipSetAccent or Theme.ChipSet
+							
+							ChipMenu = MenuButton
+						end
+						
+						ChipItem.MouseButton1Down:Connect(function()
+							BuildTable[Key] = not BuildTable[Key]
+							local Enabled = BuildTable[Key]
+							TweenService:Create(ChipItem, TweenInfo.new(0.15), {ImageColor3 = Enabled and Theme.ChipSet or Theme.ChipSetAccent}):Play()
+							TweenService:Create(ChipShadow, TweenInfo.new(0.15), {ImageColor3 = Enabled and Theme.ChipSet or Theme.ChipSetAccent}):Play()
+							TweenService:Create(Tick, TweenInfo.new(0.15), {ImageTransparency = Enabled and 0 or 1}):Play()
+							TweenService:Create(ChipLabel, TweenInfo.new(0.15), {TextColor3 = Enabled and Theme.ChipSetAccent or Theme.ChipSet, Position = Enabled and UDim2.fromOffset(30) or UDim2.fromOffset(5), Size = Enabled and (UDim2.fromScale(1,1) - UDim2.fromOffset(30)) or (UDim2.fromScale(1,1) - UDim2.fromOffset(5))}):Play()
+							if ChipMenu then
+								TweenService:Create(ChipMenu, TweenInfo.new(0.15), {ImageColor3 = Enabled and Theme.ChipSetAccent or Theme.ChipSet}):Play()
+							end
+							ChipSetCallback(BuildTable)
+						end)
+					end)
+				end
+				
+				function ChipSetLibrary:GetOptions()
+					return ChipSetOptions
+				end
+				
+				return ChipSetLibrary
 			end
 		end
 		
@@ -1233,6 +1406,7 @@ function Material.Load(Config)
 			end)
 			
 			if TotalOptions > 0 then
+				
 				local Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,(TotalOptions*30)+((TotalOptions+1)*5))
 				
 				local DataTable = Objects.new("Round")
@@ -1342,6 +1516,128 @@ function Material.Load(Config)
 						DataTableCallback(BuildTable)
 					end)
 				end)
+				
+				local DataTableLibrary = {}
+				
+				function DataTableLibrary:SetOptions(NewMenu)
+					if DataContainer then
+						DataContainer:Destroy()
+					end
+					
+					DataTableOptions = NewMenu or {}
+			
+					TotalOptions = 0
+					
+					table.foreach(DataTableOptions, function()
+						TotalOptions += 1
+					end)
+					
+					Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,(TotalOptions*30)+((TotalOptions+1)*5))
+					
+					DataTable.Size = Size
+					
+					DataContainer = Objects.new("Frame")
+					DataContainer.Name = "Container"
+					DataContainer.Parent = DataTable
+					
+					local DataList = Objects.new("UIListLayout")
+					DataList.SortOrder = Enum.SortOrder.LayoutOrder
+					DataList.Padding = UDim.new(0,5)
+					DataList.Parent = DataContainer
+					
+					local DataPadding = Objects.new("UIPadding")
+					DataPadding.PaddingBottom = UDim.new(0,5)
+					DataPadding.PaddingTop = UDim.new(0,5)
+					DataPadding.PaddingRight= UDim.new(0,5)
+					DataPadding.PaddingLeft = UDim.new(0,5)
+					DataPadding.Parent = DataContainer
+					
+					local BuildTable = {}
+					
+					table.foreach(DataTableOptions, function(Key, Value)
+						if typeof(Value) == "table" then
+							BuildTable[Key] = Value.Enabled
+						else
+							BuildTable[Key] = Value
+						end
+					end)
+					
+					DataTableCallback(BuildTable)
+					
+					TweenService:Create(DataTable, TweenInfo.new(0.5), {ImageTransparency = 0.9}):Play()
+					TweenService:Create(DataShadow, TweenInfo.new(0.5), {ImageTransparency = 0.8}):Play()
+					
+					table.foreach(DataTableOptions, function(Key, Value)
+						local DataItem = Objects.new("SmoothButton")
+						DataItem.Name = "DataItem"
+						DataItem.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,30)
+						DataItem.ImageColor3 = BuildTable[Key] and Theme.DataTable or Theme.DataTableAccent
+						DataItem.ImageTransparency = 1
+						DataItem.Parent = DataContainer
+						
+						local DataTracker = Objects.new("Round")
+						DataTracker.Name = "Tracker"
+						DataTracker.Size = UDim2.fromOffset(24,24)
+						DataTracker.Position = UDim2.fromScale(0,0.5) + UDim2.fromOffset(3,-12)
+						DataTracker.ImageColor3 = Theme.DataTable
+						DataTracker.ImageTransparency = 1
+						DataTracker.Parent = DataItem
+						
+						local Tick = Objects.new("Round")
+						Tick.Name = "Tick"
+						Tick.ScaleType = Enum.ScaleType.Stretch
+						Tick.Image = "http://www.roblox.com/asset/?id=5554953789"
+						Tick.ImageColor3 = Theme.DataTableAccent
+						Tick.ImageTransparency = 1
+						Tick.Size = UDim2.fromScale(1,1) - UDim2.fromOffset(4,4)
+						Tick.SizeConstraint = Enum.SizeConstraint.RelativeYY
+						Tick.Position = UDim2.fromOffset(2,2)
+						Tick.Parent = DataTracker
+						
+						local DataLabel = Objects.new("Label")
+						DataLabel.Name = "Value"
+						DataLabel.Size = (UDim2.fromScale(1,1) - UDim2.fromOffset(30))
+						DataLabel.Position = UDim2.fromOffset(30) or UDim2.fromOffset(5)
+						DataLabel.Text = Key
+						DataLabel.Font = Enum.Font.Gotham
+						DataLabel.TextSize = 14
+						DataLabel.TextColor3 = Theme.DataTable
+						DataLabel.TextTransparency = 1
+						DataLabel.Parent = DataItem
+						
+						TweenService:Create(DataItem, TweenInfo.new(0.5), {ImageTransparency = BuildTable[Key] and 0.8 or 0}):Play()
+						TweenService:Create(DataTracker, TweenInfo.new(0.5), {ImageTransparency = BuildTable[Key] and 0 or 0.8}):Play()
+						TweenService:Create(Tick, TweenInfo.new(0.5), {ImageTransparency = BuildTable[Key] and 0 or 0.7}):Play()
+						TweenService:Create(DataLabel, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
+						
+						local DataMenu
+						
+						if typeof(Value) == "table" then
+							local Menu = Value.Menu or {}
+							
+							local MenuAdded, MenuButton = TryAddMenu(DataItem, Menu, {})
+							
+							MenuButton.ImageColor3 = Theme.DataTable
+							
+							DataMenu = MenuButton
+						end
+						
+						DataItem.MouseButton1Down:Connect(function()
+							BuildTable[Key] = not BuildTable[Key]
+							local Enabled = BuildTable[Key]
+							TweenService:Create(DataItem, TweenInfo.new(0.15), {ImageTransparency = Enabled and 0.8 or 0, ImageColor3 = Enabled and Theme.DataTable or Theme.DataTableAccent}):Play()
+							TweenService:Create(Tick, TweenInfo.new(0.15), {ImageTransparency = Enabled and 0 or 0.7}):Play()
+							TweenService:Create(DataTracker, TweenInfo.new(0.15), {ImageTransparency = Enabled and 0 or 0.8}):Play()
+							DataTableCallback(BuildTable)
+						end)
+					end)
+				end
+				
+				function DataTableLibrary:GetOptions()
+					return DataTableOptions
+				end
+				
+				return DataTableLibrary
 			end
 		end
 		
@@ -1613,6 +1909,26 @@ function Material.Load(Config)
 				ColorTracker.Position -= UDim2.fromOffset(25,0)
 				MenuButton.ImageColor3 = Theme.ColorPickerAccent
 			end
+			
+			local ColorPickerLibrary = {}
+			
+			function ColorPickerLibrary:SetText(Value)
+				ColorLabel.Text = Value
+			end
+			
+			function ColorPickerLibrary:GetText()
+				return ColorLabel.Text
+			end
+			
+			function ColorPickerLibrary:SetColor(Value)
+				H.Value, S.Value, V.Value = Color3.toHSV(Value)
+			end
+			
+			function ColorPickerLibrary:GetColor()
+				return ColorTracker.ImageColor3
+			end
+			
+			return ColorPickerLibrary
 		end
 		
 		function OptionLibrary.Toggle(ToggleConfig)
@@ -1688,6 +2004,28 @@ function Material.Load(Config)
 				ToggleTracker.Position -= UDim2.fromOffset(15,0)
 				MenuButton.ImageColor3 = Theme.Toggle
 			end
+			
+			local ToggleLibrary = {}
+			
+			function ToggleLibrary:SetText(Value)
+				ToggleLabel.Text = Value
+			end
+			
+			function ToggleLibrary:GetText()
+				return ToggleLabel.Text
+			end
+			
+			function ToggleLibrary:SetState(Value)
+				ToggleDefault = Value
+				TweenService:Create(Dot, TweenInfo.new(0.15), {Position = (ToggleDefault and UDim2.fromScale(1,0.5) or UDim2.fromScale(0,0.5)) - UDim2.fromOffset(8,8), ImageColor3 = ToggleDefault and Theme.Toggle or Theme.ToggleAccent}):Play()
+				ToggleCallback(ToggleDefault)
+			end
+			
+			function ToggleLibrary:GetState()
+				return ToggleDefault
+			end
+			
+			return ToggleLibrary
 		end
 		
 		function OptionLibrary.TextField(TextFieldConfig)
@@ -1752,6 +2090,19 @@ function Material.Load(Config)
 			if MenuAdded then
 				MenuBar.ImageColor3 = Theme.TextFieldAccent
 			end
+			
+			local TextFieldLibrary = {}
+			
+			function TextFieldLibrary:SetText(Value)
+				TextInput.Text = Value
+				TextFieldCallback(Value)
+			end
+			
+			function TextFieldLibrary:GetText()
+				return TextInput.Text
+			end
+			
+			return TextFieldLibrary
 		end
 		
 		function OptionLibrary.Slider(SliderConfig)
@@ -1822,7 +2173,7 @@ function Material.Load(Config)
 			
 			local SliderDot = Objects.new("CircleButton")
 			SliderDot.Size = UDim2.fromOffset(10,10)
-			SliderDot.Position = UDim2.fromScale(0.5,0.5) - UDim2.fromOffset(5,5)
+			SliderDot.Position = UDim2.fromScale(DefaultScale,0.5) - UDim2.fromOffset(5,5)
 			SliderDot.ImageColor3 = Theme.SliderAccent
 			SliderDot.ImageTransparency = 1
 			SliderDot.ZIndex = 50
@@ -1830,7 +2181,7 @@ function Material.Load(Config)
 			
 			local SliderFadedDot = Objects.new("Circle")
 			SliderFadedDot.Size = UDim2.fromOffset(SizeFromScale,SizeFromScale)
-			SliderFadedDot.Position = UDim2.fromScale(DefaultScale,0.5) - UDim2.fromOffset(SizeFromScale/2,SizeFromScale/2)
+			SliderFadedDot.Position = UDim2.fromScale(0.5,0.5) - UDim2.fromOffset(SizeFromScale/2,SizeFromScale/2)
 			SliderFadedDot.ImageColor3 = Theme.SliderAccent
 			SliderFadedDot.ImageTransparency = 1
 			SliderFadedDot.ZIndex = 50
@@ -1875,6 +2226,44 @@ function Material.Load(Config)
 				SliderTracker.Size -= UDim2.fromOffset(20,0)
 				MenuButton.ImageColor3 = Theme.SliderAccent
 			end
+			
+			local SliderLibrary = {}
+			
+			function SliderLibrary:SetText(Value)
+				SliderTitle.Text = Value
+			end
+			
+			function SliderLibrary:GetText()
+				return SliderTitle.Text
+			end
+			
+			function SliderLibrary:SetMin(Value)
+				SliderMin = Value
+				local SliderDef = math.clamp(SliderConfig.Def, SliderMin, SliderMax) or math.clamp(50, SliderMin, SliderMax)
+				local DefaultScale =  (SliderDef - SliderMin) / (SliderMax - SliderMin)
+				local SizeFromScale = (MinSize +  (MaxSize - MinSize)) * DefaultScale
+				SizeFromScale -= (SizeFromScale % 2)
+				SliderDot.Position = UDim2.fromScale(DefaultScale,0.5) - UDim2.fromOffset(SizeFromScale/2,SizeFromScale/2)
+			end
+			
+			function SliderLibrary:SetMax(Value)
+				SliderMax = Value
+				local SliderDef = math.clamp(SliderConfig.Def, SliderMin, SliderMax) or math.clamp(50, SliderMin, SliderMax)
+				local DefaultScale =  (SliderDef - SliderMin) / (SliderMax - SliderMin)
+				local SizeFromScale = (MinSize +  (MaxSize - MinSize)) * DefaultScale
+				SizeFromScale -= (SizeFromScale % 2)
+				SliderDot.Position = UDim2.fromScale(DefaultScale,0.5) - UDim2.fromOffset(SizeFromScale/2,SizeFromScale/2)
+			end
+			
+			function SliderLibrary:GetMin()
+				return SliderMin
+			end
+			
+			function SliderLibrary:GetMax()
+				return SliderMax
+			end
+			
+			return SliderLibrary
 		end
 		
 		return OptionLibrary
