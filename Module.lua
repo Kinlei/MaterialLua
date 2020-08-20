@@ -1121,6 +1121,14 @@ function Material.Load(Config)
 			
 			local DropdownLibrary = {}
 			
+			function DropdownLibrary:SetText(Value)
+				DropdownTitle.Text = Value
+			end
+			
+			function DropdownLibrary:GetText()
+				return DropdownTitle.Text
+			end
+			
 			function DropdownLibrary:SetOptions(NewMenu)
 				DropdownOptions = NewMenu or {}
 				NumberOfOptions = #DropdownOptions
