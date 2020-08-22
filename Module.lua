@@ -229,8 +229,10 @@ local function CircleAnim(GuiObject, EndColour, StartColour)
 	Circle.Parent = GuiObject
 	local Size = GuiObject.AbsoluteSize.X
 	TweenService:Create(Circle, TweenInfo.new(1), {Position = UDim2.fromScale(PX,PY) - UDim2.fromOffset(Size/2,Size/2), ImageTransparency = 1, ImageColor3 = EndColour, Size = UDim2.fromOffset(Size,Size)}):Play()
-	wait(2)
-	Circle:Destroy()
+	spawn(function()
+		wait(2)
+		Circle:Destroy()
+	end)
 end
 
 local Material = {}
