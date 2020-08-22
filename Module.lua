@@ -590,8 +590,8 @@ function CreateNewButton(ButtonConfig, Parent)
 	TweenService:Create(ButtonLabel, TweenInfo.new(0.5), {TextTransparency = 0}):Play()
 	
 	Button.MouseButton1Down:Connect(function()
-		ButtonCallback()
 		CircleAnim(ButtonLabel, ThisTheme.ButtonAccent, ThisTheme.Button)
+		ButtonCallback()
 	end)
 	
 	local MenuAdded = TryAddMenu(Button, Menu, {})
