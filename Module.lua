@@ -2103,7 +2103,6 @@ function Material.Load(Config)
 			
 			function TextFieldLibrary:SetText(Value)
 				TextInput.Text = Value
-				TextFieldCallback(Value)
 			end
 			
 			function TextFieldLibrary:GetText()
