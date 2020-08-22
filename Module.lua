@@ -596,7 +596,7 @@ function CreateNewButton(ButtonConfig, Parent)
 	
 	local MenuAdded = TryAddMenu(Button, Menu, {})
 	
-	return Button
+	return Button, ButtonLabel
 end
 
 local TargetParent = RunService:IsStudio() and Player.PlayerGui or CoreGuiService
@@ -1004,16 +1004,16 @@ function Material.Load(Config)
 		local OptionLibrary = {}
 		
 		function OptionLibrary.Button(ButtonConfig)
-			local NewButton = CreateNewButton(ButtonConfig, PageContentFrame)
+			local NewButton, ButtonLabel = CreateNewButton(ButtonConfig, PageContentFrame)
 			
 			local ButtonLibrary = {}
 			
 			function ButtonLibrary:SetText(Value)
-				NewButton.Text = Value
+				ButtonLabel.Text = Value
 			end
 			
 			function ButtonLibrary:GetText()
-				return NewButton.Text
+				return ButtonLabel.Text
 			end
 			
 			return ButtonLibrary
