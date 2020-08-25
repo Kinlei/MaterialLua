@@ -1845,6 +1845,7 @@ function Material.Load(Config)
 					Color3.fromHSV(H.Value,1,V.Value), 
 					Color3.fromRGB(0,0,0):Lerp(Color3.fromRGB(255,255,255),V.Value)
 				)
+				ColorPickerCallback(Color3.fromHSV(H.Value,S.Value,V.Value))
 			end)
 			
 			S:GetPropertyChangedSignal("Value"):Connect(function()
@@ -1857,6 +1858,7 @@ function Material.Load(Config)
 					Color3.fromHSV(H.Value,1,V.Value), 
 					Color3.fromRGB(0,0,0):Lerp(Color3.fromRGB(255,255,255),V.Value)
 				)
+				ColorPickerCallback(Color3.fromHSV(H.Value,S.Value,V.Value))
 			end)
 			
 			V:GetPropertyChangedSignal("Value"):Connect(function()
@@ -1869,6 +1871,7 @@ function Material.Load(Config)
 					Color3.fromHSV(H.Value,1,V.Value), 
 					Color3.fromRGB(0,0,0):Lerp(Color3.fromRGB(255,255,255),V.Value)
 				)
+				ColorPickerCallback(Color3.fromHSV(H.Value,S.Value,V.Value))
 			end)
 			
 			HueTracker.MouseButton1Down:Connect(function()
