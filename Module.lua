@@ -291,6 +291,7 @@ local NavBar = {
 		NavBarList.FillDirection = Enum.FillDirection.Horizontal
 		NavBarList.HorizontalAlignment = Enum.HorizontalAlignment.Left
 		NavBarList.VerticalAlignment = Enum.VerticalAlignment.Center
+		NavBarList.SortOrder = Enum.SortOrder.LayoutOrder
 		NavBarList.Parent = NavBarContent
 		
 		local NavBarPadding = Objects.new("UIPadding")
@@ -349,6 +350,7 @@ local NavBar = {
 		NavBarList.FillDirection = Enum.FillDirection.Horizontal
 		NavBarList.HorizontalAlignment = Enum.HorizontalAlignment.Left
 		NavBarList.VerticalAlignment = Enum.VerticalAlignment.Center
+		NavBarList.SortOrder = Enum.SortOrder.LayoutOrder
 		NavBarList.Parent = NavBarContent
 		
 		local NavBarPadding = Objects.new("UIPadding")
@@ -416,6 +418,7 @@ local NavBar = {
 		NavBarList.FillDirection = Enum.FillDirection.Vertical
 		NavBarList.HorizontalAlignment = Enum.HorizontalAlignment.Center
 		NavBarList.VerticalAlignment = Enum.VerticalAlignment.Top
+		NavBarList.SortOrder = Enum.SortOrder.LayoutOrder
 		NavBarList.Parent = NavBarContent
 		
 		local NavBarPadding = Objects.new("UIPadding")
