@@ -5,7 +5,7 @@ local NewUI = Material.Load({
   -> Style <number[1,3]>
   -> SizeX <number[inf]>
   -> SizeY <number[inf]>
-  -> Theme <string["Light","Dark"]>
+  -> Theme <string["Light","Dark","Mocha","Aqua","Jester"]>
   -> ColorOverrides <table>
 })
 
