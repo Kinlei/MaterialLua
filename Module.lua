@@ -562,7 +562,7 @@ function TryAddMenu(Object, Menu, ReturnTable)
 	local ReturnTable = ReturnTable
 	ReturnTable.Object = Object
 	local Total = 0
-			
+	
 	table.foreach(Menu, function(_, Value)
 		Total = Total + ((typeof(Value) == "function") and 1 or 0)
 	end)
@@ -1026,7 +1026,7 @@ function Material.Load(Config)
 			NewImage.Image = Image
 			NewImage.ZIndex = 200
 			NewImage.ImageTransparency = 1
-
+			
 			if Button then
 				NewImage.Position = UDim2.fromScale(0,0.5) - UDim2.fromOffset(0,10)
 				NewImage.Parent = Button
@@ -1282,7 +1282,7 @@ function Material.Load(Config)
 			local TotalOptions = 0
 			
 			table.foreach(ChipSetOptions, function()
-				TotalOptions = TotalOptions 1
+				TotalOptions = TotalOptions + 1
 			end)
 			
 			if TotalOptions > 0 then
@@ -1391,7 +1391,7 @@ function Material.Load(Config)
 					ChipSetOptions = NewMenu or {}
 					
 					TotalOptions = 0
-			
+					
 					table.foreach(ChipSetOptions, function()
 						TotalOptions = TotalOptions + 1
 					end)
@@ -1634,7 +1634,7 @@ function Material.Load(Config)
 					end
 					
 					DataTableOptions = NewMenu or {}
-			
+					
 					TotalOptions = 0
 					
 					table.foreach(DataTableOptions, function()
