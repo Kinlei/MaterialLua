@@ -564,7 +564,7 @@ function TryAddMenu(Object, Menu, ReturnTable)
 	local Total = 0
 			
 	table.foreach(Menu, function(_, Value)
-		Total += (typeof(Value) == "function") and 1 or 0
+		Total = Total + ((typeof(Value) == "function") and 1 or 0)
 	end)
 	
 	if Total > 0 then
@@ -779,7 +779,7 @@ function Material.Load(Config)
 		MouseMove = Mouse.Move:Connect(function()
 			local nMx, nMy = Mouse.X, Mouse.Y
 			local Dx, Dy = nMx - Mx, nMy - My
-			MainFrame.Position += UDim2.fromOffset(Dx, Dy)
+			MainFrame.Position = MainFrame.Position + UDim2.fromOffset(Dx, Dy)
 			Mx, My = nMx, nMy
 		end)
 		MouseKill = InputService.InputEnded:Connect(function(UserInput)
@@ -1100,7 +1100,7 @@ function Material.Load(Config)
 			PageContentFrame.CanvasSize = UDim2.fromOffset(0,PageList.AbsoluteContentSize.Y+10)
 		end)
 		
-		TabCount += 1
+		TabCount = TabCount + 1
 		
 		local OptionLibrary = {}
 		
@@ -1282,7 +1282,7 @@ function Material.Load(Config)
 			local TotalOptions = 0
 			
 			table.foreach(ChipSetOptions, function()
-				TotalOptions += 1
+				TotalOptions = TotalOptions 1
 			end)
 			
 			if TotalOptions > 0 then
@@ -1393,7 +1393,7 @@ function Material.Load(Config)
 					TotalOptions = 0
 			
 					table.foreach(ChipSetOptions, function()
-						TotalOptions += 1
+						TotalOptions = TotalOptions + 1
 					end)
 					
 					for _, Element in next, ChipSet:GetChildren() do
@@ -1511,7 +1511,7 @@ function Material.Load(Config)
 			local TotalOptions = 0
 			
 			table.foreach(DataTableOptions, function()
-				TotalOptions += 1
+				TotalOptions = TotalOptions + 1
 			end)
 			
 			if TotalOptions > 0 then
@@ -1638,7 +1638,7 @@ function Material.Load(Config)
 					TotalOptions = 0
 					
 					table.foreach(DataTableOptions, function()
-						TotalOptions += 1
+						TotalOptions = TotalOptions + 1
 					end)
 					
 					Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,(TotalOptions*30)+((TotalOptions+1)*5))
@@ -1822,11 +1822,11 @@ function Material.Load(Config)
 			Hue.Parent = ColorPicker
 			
 			local Saturation = Hue:Clone()
-			Saturation.Position += UDim2.fromOffset(0,25)
+			Saturation.Position = Saturation.Position + UDim2.fromOffset(0,25)
 			Saturation.Parent = ColorPicker
 			
 			local Value = Saturation:Clone()
-			Value.Position += UDim2.fromOffset(0,25)
+			Value.Position = Value.Position UDim2.fromOffset(0,25)
 			Value.Parent = ColorPicker
 			
 			local HueLabel = Objects.new("Label")
@@ -1885,11 +1885,11 @@ function Material.Load(Config)
 			HueTracker.Parent = ColorPicker
 			
 			local SaturationTracker = HueTracker:Clone()
-			SaturationTracker.Position += UDim2.fromOffset(0,25)
+			SaturationTracker.Position = SaturationTracker.Position + UDim2.fromOffset(0,25)
 			SaturationTracker.Parent = ColorPicker
 			
 			local ValueTracker = SaturationTracker:Clone()
-			ValueTracker.Position += UDim2.fromOffset(0,25)
+			ValueTracker.Position = ValueTracker.Position + UDim2.fromOffset(0,25)
 			ValueTracker.Parent = ColorPicker
 			
 			local HueShadow = Objects.new("Shadow")
