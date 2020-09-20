@@ -67,6 +67,7 @@ local NewColorPicker = NewPage.ColorPicker({
 
 local NewTextField = NewPage.TextField({
   -> Text <string[any]>
+  -> Type <string["Password", "Default"]>
   -> Callback <function(value)>
   -> Menu <table>
 })
