@@ -2142,6 +2142,7 @@ function Material.Load(Config)
 		
 		function OptionLibrary.TextField(TextFieldConfig)
 			local TextFieldText = TextFieldConfig.Text or "nil text field"
+			local TextFieldInputType = TextFieldConfig.Type or TextFieldConfig.type or "Default"
 			local TextFieldCallback = TextFieldConfig.Callback or function() print("nil text field") end
 			local Menu = TextFieldConfig.Menu or {}
 			
@@ -2169,6 +2170,7 @@ function Material.Load(Config)
 			TextInput.Name = "Value"
 			TextInput.PlaceholderText = TextFieldText
 			TextInput.PlaceholderColor3 = Theme.TextFieldAccent
+			TextInput.TextInputType = Enum.TextInputType[TextFieldInputType]
 			TextInput.TextColor3 = Theme.TextFieldAccent
 			TextInput.Text = ""
 			TextInput.Font = Enum.Font.GothamSemibold
