@@ -2228,7 +2228,7 @@ function Material.Load(Config)
 			LabelContainer.Parent = PageContentFrame
 			
 			local LabelContent = Objects.new("Label")
-			LabelContent.TextColor3 = Theme.Button
+			LabelContent.TextColor3 = Theme.ChipSet
 			LabelContent.Text = LabelText:upper()
 			LabelContent.TextSize = 12
 			LabelContent.Font = Enum.Font.GothamSemibold
