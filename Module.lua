@@ -738,9 +738,9 @@ function Material.Load(Config)
     local ProtectFunctions = {};
     ProtectFunctions.Synapse = function(GuiObject) syn.protect_gui(GuiObject); GuiObject.Parent = CoreGuiService; end;
     ProtectFunctions.ProtoSmasher = function(GuiObject) GuiObject.Parent = get_hidden_gui(); end;
-    ProtectFunctions.Sentinel = function(GuiObject) return; end;
+    ProtectFunctions.Sentinel = function(GuiObject) GuiObject.Parent = CoreGuiService; end;
     ProtectFunctions.ScriptWare = function(GuiObject) GuiObject.Parent = gethui(); end;
-    ProtectFunctions.Undefined = function(GuiObject) return; end;
+    ProtectFunctions.Undefined = function(GuiObject) GuiObject.Parent = CoreGuiService; end;
 
 	local NewInstance = Objects.new("ScreenGui")
 	NewInstance.Name = Title
