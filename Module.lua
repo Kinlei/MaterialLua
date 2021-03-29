@@ -700,8 +700,6 @@ function CreateNewButton(ButtonConfig, Parent)
 	return Button, ButtonLabel
 end
 
-local TargetParent = RunService:IsStudio() and Player.PlayerGui or CoreGuiService
-
 function Material.Load(Config)
 	local Style = (Config.Style and math.clamp(Config.Style, 1, 3)) or 1
 	local Title = Config.Title or "MaterialLua"
@@ -719,15 +717,36 @@ function Material.Load(Config)
 		ThisTheme[KeyOverride] = ValueOverride
 	end
 
-	local OldInstance = TargetParent:FindFirstChild(Title)
+	pcall(function() OldInstance:Destroy() end);
 
-	if OldInstance then
-		OldInstance:Destroy()
-	end
+    local function GetExploit()
+        local Table = {};
+        Table.Synapse = syn;
+        Table.ProtoSmasher = pebc_create;
+        Table.Sentinel = issentinelclosure;
+        Table.ScriptWare = getexecutorname;
+    
+        for ExploitName, ExploitFunction in next, Table do
+            if (type(ExploitFunction) == "function") then
+                return ExploitName;
+            end;
+        end;
+        
+        return "Undefined";
+    end;
+
+    local ProtectFunctions = {};
+    ProtectFunctions.Synapse = function(GuiObject) syn.protect_gui(GuiObject); GuiObject.Parent = CoreGuiService; end;
+    ProtectFunctions.ProtoSmasher = function(GuiObject) GuiObject.Parent = get_hidden_gui(); end;
+    ProtectFunctions.Sentinel = function(GuiObject) return; end;
+    ProtectFunctions.ScriptWare = function(GuiObject) GuiObject.Parent = gethui(); end;
+    ProtectFunctions.Undefined = function(GuiObject) return; end;
 
 	local NewInstance = Objects.new("ScreenGui")
 	NewInstance.Name = Title
-	NewInstance.Parent = TargetParent
+    ProtectFunctions[GetExploit()](NewInstance);
+
+    getgenv().OldInstance = NewInstance;
 
 	MainGUI = NewInstance
 
