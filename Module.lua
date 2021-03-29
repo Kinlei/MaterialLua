@@ -727,7 +727,7 @@ function Material.Load(Config)
         Table.ScriptWare = getexecutorname;
     
         for ExploitName, ExploitFunction in next, Table do
-            if (type(ExploitFunction) == "function") then
+            if (ExploitFunction) then
                 return ExploitName;
             end;
         end;
