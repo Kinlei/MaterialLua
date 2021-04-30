@@ -717,36 +717,13 @@ function Material.Load(Config)
 		ThisTheme[KeyOverride] = ValueOverride
 	end
 
-	pcall(function() OldInstance:Destroy() end);
-
-    local function GetExploit()
-        local Table = {};
-        Table.Synapse = syn;
-        Table.ProtoSmasher = pebc_create;
-        Table.Sentinel = issentinelclosure;
-        Table.ScriptWare = getexecutorname;
-    
-        for ExploitName, ExploitFunction in next, Table do
-            if (ExploitFunction) then
-                return ExploitName;
-            end;
-        end;
-        
-        return "Undefined";
-    end;
-
-    local ProtectFunctions = {};
-    ProtectFunctions.Synapse = function(GuiObject) syn.protect_gui(GuiObject); GuiObject.Parent = CoreGuiService; end;
-    ProtectFunctions.ProtoSmasher = function(GuiObject) GuiObject.Parent = get_hidden_gui(); end;
-    ProtectFunctions.Sentinel = function(GuiObject) GuiObject.Parent = CoreGuiService; end;
-    ProtectFunctions.ScriptWare = function(GuiObject) GuiObject.Parent = gethui(); end;
-    ProtectFunctions.Undefined = function(GuiObject) GuiObject.Parent = CoreGuiService; end;
+	pcall(function() getgenv().OldInstance:Destroy() end);
 
 	local NewInstance = Objects.new("ScreenGui")
 	NewInstance.Name = Title
-    ProtectFunctions[GetExploit()](NewInstance);
+	NewInstance.Parent = CoreGuiService;
 
-    getgenv().OldInstance = NewInstance;
+	getgenv().OldInstance = NewInstance;
 
 	MainGUI = NewInstance
 
@@ -2236,16 +2213,16 @@ function Material.Load(Config)
 
 			return TextFieldLibrary
 		end
-		
+
 		function OptionLibrary.Label(LabelConfig)
 			local LabelText = LabelConfig.Text or "nil label"
-			
+
 			local LabelContainer = Objects.new("Round")
 			LabelContainer.Name = "Label"
 			LabelContainer.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,20)
 			LabelContainer.ImageColor3 = Theme.MainFrame
 			LabelContainer.Parent = PageContentFrame
-			
+
 			local LabelContent = Objects.new("Label")
 			LabelContent.TextColor3 = Theme.ChipSet
 			LabelContent.Text = LabelText:upper()
@@ -2254,13 +2231,13 @@ function Material.Load(Config)
 			LabelContent.Size = UDim2.fromScale(1,1) + UDim2.fromOffset(-5,0)
 			LabelContent.Position = UDim2.fromOffset(5,0)
 			LabelContent.Parent = LabelContainer
-			
+
 			local LabelOptions = {}
-			
+
 			function LabelOptions.SetText(Text)
 				LabelContent.Text = Text
 			end
-			
+
 			return LabelOptions
 		end
 
