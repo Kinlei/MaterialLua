@@ -2269,6 +2269,7 @@ function Material.Load(Config)
 			local SliderCallback = SliderConfig.Callback or function() print("nil slider") end
 			local SliderMin = SliderConfig.Min or 0
 			local SliderMax = SliderConfig.Max or 100
+			local SliderPrecision = SliderConfig.Precision or 0
 			local Menu = SliderConfig.Menu or {}
 
 			if SliderMin > SliderMax then
@@ -2360,7 +2361,8 @@ function Material.Load(Config)
 				MouseMove = Mouse.Move:Connect(function()
 					local Px = GetXY(SliderTracker)
 					local SizeFromScale = (MinSize +  (MaxSize - MinSize)) * Px
-					local Value = math.floor(SliderMin + ((SliderMax - SliderMin) * Px))
+					local Power = 10 ^ SliderPrecision
+					local Value = math.floor((SliderMin + ((SliderMax - SliderMin) * Px)) * Power) / Power
 					SizeFromScale = SizeFromScale - (SizeFromScale % 2)
 					TweenService:Create(SliderDot, TweenInfo.new(0.15), {Position = UDim2.fromScale(Px,0.5) - UDim2.fromOffset(5,5)}):Play()
 					TweenService:Create(SliderFill, TweenInfo.new(0.15), {Size = UDim2.fromScale(Px, 1)}):Play()
