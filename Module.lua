@@ -1290,6 +1290,10 @@ function Material.Load(Config)
 				return DropdownOptions
 			end
 
+			if DropdownOptions.Default then
+				DropdownTitle.Text = DropdownText..": "..DropdownOptions.Default
+			end
+
 			return DropdownLibrary
 		end
 
