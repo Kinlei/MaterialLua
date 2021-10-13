@@ -1845,7 +1845,7 @@ function Material.Load(Config)
 			Saturation.Parent = ColorPicker
 
 			local Value = Saturation:Clone()
-			Value.Position = Value.Position UDim2.fromOffset(0,25)
+			Value.Position = Value.Position + UDim2.fromOffset(0,25)
 			Value.Parent = ColorPicker
 
 			local HueLabel = Objects.new("Label")
