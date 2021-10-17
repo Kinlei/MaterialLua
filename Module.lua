@@ -2282,7 +2282,7 @@ function Material.Load(Config)
 			end
 
 			local SliderDef = math.clamp(SliderConfig.Def, SliderMin, SliderMax) or math.clamp(50, SliderMin, SliderMax)
-			local DefaultScale =  (SliderDef - SliderMin) / (SliderMax - SliderMin)
+			local DefaultScale = (SliderDef - SliderMin) / (SliderMax - SliderMin)
 
 			local Slider = Objects.new("Round")
 			Slider.Name = "Slider"
@@ -2401,6 +2401,10 @@ function Material.Load(Config)
 			function SliderLibrary:GetText()
 				return SliderTitle.Text
 			end
+
+            function SliderLibrary:GetValue()
+                return tonumber(SliderValue.Text)
+            end
 
 			function SliderLibrary:SetMin(Value)
 				SliderMin = Value
