@@ -1141,6 +1141,7 @@ function Material.Load(Config)
 
 		function OptionLibrary.Dropdown(DropdownConfig)
 			local DropdownText = DropdownConfig.Text or "nil dropdown"
+            local DropdownValue = DropdownConfig.Default
 			local DropdownCallback = DropdownConfig.Callback or function() print("nil dropdown") end
 			local DropdownOptions = DropdownConfig.Options or {}
 			local Menu = DropdownConfig.Menu or {}
@@ -1222,6 +1223,7 @@ function Material.Load(Config)
 				NewButton.MouseButton1Down:Connect(function()
 					DropdownCallback(Value)
 					DropdownTitle.Text = DropdownText..": "..Value
+                    DropdownValue = Value
 				end)
 			end)
 
@@ -1248,6 +1250,10 @@ function Material.Load(Config)
 			function DropdownLibrary:GetText()
 				return DropdownTitle.Text
 			end
+
+            function DropdownLibrary:GetValue()
+                return DropdownValue
+            end
 
 			function DropdownLibrary:SetOptions(NewMenu)
 				DropdownOptions = NewMenu or {}
@@ -1282,6 +1288,7 @@ function Material.Load(Config)
 					NewButton.MouseButton1Down:Connect(function()
 						DropdownCallback(Value)
 						DropdownTitle.Text = DropdownText..": "..Value
+                        DropdownValue = Value
 					end)
 				end)
 			end
