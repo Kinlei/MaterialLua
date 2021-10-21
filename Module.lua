@@ -1161,7 +1161,7 @@ function Material.Load(Config)
 			local DropdownTitle = Objects.new("Button")
 			DropdownTitle.Name = "Title"
 			DropdownTitle.Font = Enum.Font.GothamSemibold
-			DropdownTitle.Text = DropdownText
+			DropdownTitle.Text = DropdownValue and DropdownText..": "..DropdownValue or DropdownText
 			DropdownTitle.TextColor3 = Theme.DropdownAccent
 			DropdownTitle.TextTransparency = 1
 			DropdownTitle.TextSize = 14
