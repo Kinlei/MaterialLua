@@ -75,9 +75,9 @@ local D = Y.Dropdown({
 local E = Y.ChipSet({
 	Text = "Chipping away",
 	Callback = function(ChipSet)
-		table.foreach(ChipSet, function(Option, Value)
+		for Option, Value in pairs(ChipSet) do
 			print(Option, Value)
-		end)
+		end
 	end,
 	Options = {
 		ESP = true,
