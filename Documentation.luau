@@ -101,33 +101,34 @@ type NewTextField = (
 	GetText: (self: NewTextField) -> string,
 }
 
+type UIConfiguration = {
+	Title: string?,
+	Style: number?,
+	SizeX: number?,
+	SizeY: number?,
+	Theme: ("Light" | "Dark" | "Mocha" | "Aqua" | "Jester")?,
+	ColorOverrides: {[string]: Color3}?
+}
+
+type UITab = {
+	NewButton: NewButton,
+	NewToggle: NewToggle,
+	NewSlider: NewSlider,
+	NewDropdown: NewDropdown,
+	NewChipSet: NewChipSet,
+	NewDataTable: NewDataTable,
+	NewColorPicker: NewColorPicker,
+	NewTextField: NewTextField,
+}
+
 type MaterialLua = {
-	Load: (
-		{
-			Title: string,
-			Style: number,
-			SizeX: number,
-			SizeY: number,
-			Theme: "Light" | "Dark" | "Mocha" | "Aqua" | "Jester",
-		}
-	) -> ({
+	Load: (UIConfiguration) -> ({
+		Banner: Banner,
 		New: (
 			{
 				Title: string,
 				ImageID: number,
 			}
-		) -> ({
-			Banner: Banner,
-			NewButton: NewButton,
-			NewToggle: NewToggle,
-			NewSlider: NewSlider,
-			NewDropdown: NewDropdown,
-			NewChipSet: NewChipSet,
-			NewDataTable: NewDataTable,
-			NewColorPicker: NewColorPicker,
-			NewTextField: NewTextField,
-		}),
+		) -> UITab,
 	}),
 }
-
-local MaterialLua: MaterialLua = require(...)
