@@ -2395,6 +2395,21 @@ function Material.Load(Config)
 			function SliderLibrary:GetText()
 				return SliderTitle.Text
 			end
+			
+			function SliderLibrary:SetValue(Value)
+				Value = math.floor(SliderMin + ((SliderMax - SliderMin) * Px))
+				SizeFromScale = SizeFromScale - (SizeFromScale % 2)
+				TweenService:Create(SliderDot, TweenInfo.new(0.15), {Position = UDim2.fromScale(Px,0.5) - UDim2.fromOffset(5,5)}):Play()
+				TweenService:Create(SliderFill, TweenInfo.new(0.15), {Size = UDim2.fromScale(Px, 1)}):Play()
+				SliderFadedDot.Size = UDim2.fromOffset(SizeFromScale,SizeFromScale)
+				SliderFadedDot.Position = UDim2.fromScale(0.5,0.5) - UDim2.fromOffset(SizeFromScale/2,SizeFromScale/2)
+				SliderValue.Text = tostring(Value)
+				SliderCallback(Value)
+			end
+			
+			function SliderLibrary:GetValue()
+				return tonumber(SliderValue.Text)
+			end
 
 			function SliderLibrary:SetMin(Value)
 				SliderMin = Value
