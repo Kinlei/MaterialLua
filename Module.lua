@@ -725,13 +725,13 @@ function Material.Load(Config)
         Table.ProtoSmasher = pebc_create;
         Table.Sentinel = issentinelclosure;
         Table.ScriptWare = getexecutorname;
-    
+
         for ExploitName, ExploitFunction in next, Table do
             if (ExploitFunction) then
                 return ExploitName;
             end;
         end;
-        
+
         return "Undefined";
     end;
 
@@ -1141,6 +1141,7 @@ function Material.Load(Config)
 
 		function OptionLibrary.Dropdown(DropdownConfig)
 			local DropdownText = DropdownConfig.Text or "nil dropdown"
+            local DropdownValue = DropdownConfig.Default
 			local DropdownCallback = DropdownConfig.Callback or function() print("nil dropdown") end
 			local DropdownOptions = DropdownConfig.Options or {}
 			local Menu = DropdownConfig.Menu or {}
@@ -1160,7 +1161,7 @@ function Material.Load(Config)
 			local DropdownTitle = Objects.new("Button")
 			DropdownTitle.Name = "Title"
 			DropdownTitle.Font = Enum.Font.GothamSemibold
-			DropdownTitle.Text = DropdownText
+			DropdownTitle.Text = DropdownValue and DropdownText..": "..DropdownValue or DropdownText
 			DropdownTitle.TextColor3 = Theme.DropdownAccent
 			DropdownTitle.TextTransparency = 1
 			DropdownTitle.TextSize = 14
@@ -1222,6 +1223,7 @@ function Material.Load(Config)
 				NewButton.MouseButton1Down:Connect(function()
 					DropdownCallback(Value)
 					DropdownTitle.Text = DropdownText..": "..Value
+                    DropdownValue = Value
 				end)
 			end)
 
@@ -1248,6 +1250,10 @@ function Material.Load(Config)
 			function DropdownLibrary:GetText()
 				return DropdownTitle.Text
 			end
+
+            function DropdownLibrary:GetValue()
+                return DropdownValue
+            end
 
 			function DropdownLibrary:SetOptions(NewMenu)
 				DropdownOptions = NewMenu or {}
@@ -1282,12 +1288,17 @@ function Material.Load(Config)
 					NewButton.MouseButton1Down:Connect(function()
 						DropdownCallback(Value)
 						DropdownTitle.Text = DropdownText..": "..Value
+                        DropdownValue = Value
 					end)
 				end)
 			end
 
 			function DropdownLibrary:GetOptions()
 				return DropdownOptions
+			end
+
+			if DropdownOptions.Default then
+				DropdownTitle.Text = DropdownText..": "..DropdownOptions.Default
 			end
 
 			return DropdownLibrary
@@ -1803,7 +1814,7 @@ function Material.Load(Config)
 
 			local ColorShadow = Objects.new("Shadow")
 			ColorShadow.ImageColor3 = Theme.ColorPickerAccent
-			ColorShadow.ImageTransparency = 1 
+			ColorShadow.ImageTransparency = 1
 			ColorShadow.Parent = ColorBar
 
 			local ColorLabel = Objects.new("Label")
@@ -1885,7 +1896,7 @@ function Material.Load(Config)
 
 			local BlackWhiteGradient = Objects.new("UIGradient")
 			BlackWhiteGradient.Color = ColorSequence.new(
-				Color3.new(1,1,1), 
+				Color3.new(1,1,1),
 				Color3.new(0,0,0)
 			)
 
@@ -1956,11 +1967,11 @@ function Material.Load(Config)
 			H:GetPropertyChangedSignal("Value"):Connect(function()
 				ColorTracker.ImageColor3 = Color3.fromHSV(H.Value,S.Value,V.Value)
 				SaturationGrad.Color = ColorSequence.new(
-					Color3.fromHSV(H.Value,1,V.Value), 
+					Color3.fromHSV(H.Value,1,V.Value),
 					Color3.fromRGB(0,0,0):Lerp(Color3.fromRGB(255,255,255),V.Value)
 				)
 				SaturationShadowGrad.Color = ColorSequence.new(
-					Color3.fromHSV(H.Value,1,V.Value), 
+					Color3.fromHSV(H.Value,1,V.Value),
 					Color3.fromRGB(0,0,0):Lerp(Color3.fromRGB(255,255,255),V.Value)
 				)
 				ColorPickerCallback(Color3.fromHSV(H.Value,S.Value,V.Value))
@@ -1969,11 +1980,11 @@ function Material.Load(Config)
 			S:GetPropertyChangedSignal("Value"):Connect(function()
 				ColorTracker.ImageColor3 = Color3.fromHSV(H.Value,S.Value,V.Value)
 				SaturationGrad.Color = ColorSequence.new(
-					Color3.fromHSV(H.Value,1,V.Value), 
+					Color3.fromHSV(H.Value,1,V.Value),
 					Color3.fromRGB(0,0,0):Lerp(Color3.fromRGB(255,255,255),V.Value)
 				)
 				SaturationShadowGrad.Color = ColorSequence.new(
-					Color3.fromHSV(H.Value,1,V.Value), 
+					Color3.fromHSV(H.Value,1,V.Value),
 					Color3.fromRGB(0,0,0):Lerp(Color3.fromRGB(255,255,255),V.Value)
 				)
 				ColorPickerCallback(Color3.fromHSV(H.Value,S.Value,V.Value))
@@ -1982,11 +1993,11 @@ function Material.Load(Config)
 			V:GetPropertyChangedSignal("Value"):Connect(function()
 				ColorTracker.ImageColor3 = Color3.fromHSV(H.Value,S.Value,V.Value)
 				SaturationGrad.Color = ColorSequence.new(
-					Color3.fromHSV(H.Value,1,V.Value), 
+					Color3.fromHSV(H.Value,1,V.Value),
 					Color3.fromRGB(0,0,0):Lerp(Color3.fromRGB(255,255,255),V.Value)
 				)
 				SaturationShadowGrad.Color = ColorSequence.new(
-					Color3.fromHSV(H.Value,1,V.Value), 
+					Color3.fromHSV(H.Value,1,V.Value),
 					Color3.fromRGB(0,0,0):Lerp(Color3.fromRGB(255,255,255),V.Value)
 				)
 				ColorPickerCallback(Color3.fromHSV(H.Value,S.Value,V.Value))
@@ -2236,16 +2247,16 @@ function Material.Load(Config)
 
 			return TextFieldLibrary
 		end
-		
+
 		function OptionLibrary.Label(LabelConfig)
 			local LabelText = LabelConfig.Text or "nil label"
-			
+
 			local LabelContainer = Objects.new("Round")
 			LabelContainer.Name = "Label"
 			LabelContainer.Size = UDim2.fromScale(1,0) + UDim2.fromOffset(0,20)
 			LabelContainer.ImageColor3 = Theme.MainFrame
 			LabelContainer.Parent = PageContentFrame
-			
+
 			local LabelContent = Objects.new("Label")
 			LabelContent.TextColor3 = Theme.ChipSet
 			LabelContent.Text = LabelText:upper()
@@ -2254,13 +2265,13 @@ function Material.Load(Config)
 			LabelContent.Size = UDim2.fromScale(1,1) + UDim2.fromOffset(-5,0)
 			LabelContent.Position = UDim2.fromOffset(5,0)
 			LabelContent.Parent = LabelContainer
-			
+
 			local LabelOptions = {}
-			
+
 			function LabelOptions.SetText(Text)
 				LabelContent.Text = Text
 			end
-			
+
 			return LabelOptions
 		end
 
@@ -2269,6 +2280,7 @@ function Material.Load(Config)
 			local SliderCallback = SliderConfig.Callback or function() print("nil slider") end
 			local SliderMin = SliderConfig.Min or 0
 			local SliderMax = SliderConfig.Max or 100
+			local SliderPrecision = SliderConfig.Precision or 0
 			local Menu = SliderConfig.Menu or {}
 
 			if SliderMin > SliderMax then
@@ -2277,7 +2289,7 @@ function Material.Load(Config)
 			end
 
 			local SliderDef = math.clamp(SliderConfig.Def, SliderMin, SliderMax) or math.clamp(50, SliderMin, SliderMax)
-			local DefaultScale =  (SliderDef - SliderMin) / (SliderMax - SliderMin)
+			local DefaultScale = (SliderDef - SliderMin) / (SliderMax - SliderMin)
 
 			local Slider = Objects.new("Round")
 			Slider.Name = "Slider"
@@ -2360,7 +2372,8 @@ function Material.Load(Config)
 				MouseMove = Mouse.Move:Connect(function()
 					local Px = GetXY(SliderTracker)
 					local SizeFromScale = (MinSize +  (MaxSize - MinSize)) * Px
-					local Value = math.floor(SliderMin + ((SliderMax - SliderMin) * Px))
+					local Power = 10 ^ SliderPrecision
+					local Value = math.floor((SliderMin + ((SliderMax - SliderMin) * Px)) * Power) / Power
 					SizeFromScale = SizeFromScale - (SizeFromScale % 2)
 					TweenService:Create(SliderDot, TweenInfo.new(0.15), {Position = UDim2.fromScale(Px,0.5) - UDim2.fromOffset(5,5)}):Play()
 					TweenService:Create(SliderFill, TweenInfo.new(0.15), {Size = UDim2.fromScale(Px, 1)}):Play()
@@ -2395,6 +2408,10 @@ function Material.Load(Config)
 			function SliderLibrary:GetText()
 				return SliderTitle.Text
 			end
+
+            function SliderLibrary:GetValue()
+                return tonumber(SliderValue.Text)
+            end
 
 			function SliderLibrary:SetMin(Value)
 				SliderMin = Value

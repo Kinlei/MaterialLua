@@ -84,6 +84,7 @@ local NewTextField = NewPage.TextField({
                 
 <void> NewSlider:SetText(<string[any]>)
 <string> NewSlider:GetText(<void>)
+<number> NewSlider:GetValue(<void>)
 <void> NewSlider:SetMin(<number[any]>)
 <void> NewSlider:SetMax(<number[any]>)
 <number> NewSlider:GetMin(<void>)
